@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ConSo" ng-controller="MainController">
+  <head>
+    <title>SuperCub Project</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+
+    <style>
+      .text-fail {
+        color: #CC3333;
+      }
+      .text-success {
+        color: #009900;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f7f7f7;">
+    <script src="index.js"></script>
+    <!-- controller -->
+    <script src="controller/auth.js"></script>
+    <!-- resources -->
+    <!-- ... -->
+
+    <!-- global control -->
+    <div style="background-color: #859EAF; color: #fff; line-height: 50px;">
+      <span style="margin-left: 10px;">Con-So Application</span>
+      <div style="margin-right: 10px; text-align: right;">
+        <!--<button type="button" class="btn btn-sm btn-light">logout</button>-->
+      </div>
+    </div>
+    <!-- dashboard content -->
+    <div style="margin-left: auto; margin-right: auto; width: 1000px;">
+      <div ng-view=""></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+# individual excludes
+package-lock.json
+# dependencies
+node_modules/
+public/bower_components
+# runtime
+.vagrant/

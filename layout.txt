@@ -1,0 +1,28 @@
+mongodb   nodejs/express   angularjs
+redis
+
+notes:
+3.1 tier architecture
+persistence
+  mongodb (ehr forms)
+  redis (session)
+backend
+  nodejs/express (for middleware routing)
+frontend
+  angularjs
+
+https://hub.docker.com/_/redis/
+redis port: 6379
+https://github.com/NodeRedis/node_redis
+
+https://hub.docker.com/_/mongo/
+mongo port: 27017
+https://www.mongodb.com/presentations/user-data-management-mongodb
+https://www.percona.com/blog/2016/07/14/mongodb-data-durability/
+
+https://github.com/preboot/angularjs-webpack
+
+reqs:
+medication action plan
+medication list
+demographics
