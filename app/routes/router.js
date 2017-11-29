@@ -7,10 +7,19 @@ function handler(svr) {
     res.send('<h1>Welcome to the index!</h1>');
   });
 
+  svr.get('/v1/user', function(request, response) {
+    var session = svr.get('session'),
+        token = request.headers.token || '';
+
+    session.get(token, function(err, reply) {
+      response.json({ session: reply });
+    });
+  });
+
   svr.post('/v1/auth/user/:userid', function(request, response) {
     if( request.body.knowncred == undefined ){
       console.log('EHRLOG ' + svr.get('env') + ' [warning] - could not authenticate ' + request.params.userid + ', password not given');
-      response.status(401).json({ messsage: 'your credentials could not be verified' });
+      response.status(401).json({ message: 'your credentials could not be verified' });
       return;
     }
 
@@ -22,7 +31,7 @@ function handler(svr) {
       function(queryResult) {
         if( queryResult == null ){
           console.log('EHRLOG ' + svr.get('env') + ' [warning] - could not authenticate ' + userid + ', user not found');
-          response.status(401).json({ messsage: 'your credentials could not be verified' });
+          response.status(401).json({ message: 'your credentials could not be verified' });
           return;
         }
 
@@ -57,7 +66,7 @@ function handler(svr) {
           response.status(201).json({ token: userToken });
         } else {
           console.log('EHRLOG ' + svr.get('env') + ' [warning] - invalid password for ' + userid);
-          response.status(401).json({ messsage: 'your credentials could not be verified' });
+          response.status(401).json({ message: 'your credentials could not be verified' });
         }
       },
       function(err) {

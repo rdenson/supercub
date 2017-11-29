@@ -1,0 +1,131 @@
+<h3>{{ page.patientDisplay }}</h3>
+<div class="row" style="margin-bottom: 10px;">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">General Information</h5>
+
+        <div class="form-row">
+          <div class="col">
+            <label for="firstname">First Name</label>
+            <input id="firstname" type="text" class="form-control form-control-sm">
+          </div>
+          <div class="col">
+            <label for="middlename">Middle Name</label>
+            <input id="middlename" type="text" class="form-control form-control-sm">
+          </div>
+          <div class="col">
+            <label for="lastname">Last Name</label>
+            <input id="lastname" type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <label for="patientAddress">Address</label>
+            <input id="patientAddress" type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-6">
+            <label for="patientCity">City</label>
+            <input id="patientCity" type="text" class="form-control form-control-sm">
+          </div>
+          <div class="col-md-4">
+            <label for="patientState">State</label>
+            <select id="patientState" class="form-control form-control-sm">
+              <option ng-repeat="state in page.form.stateList">{{ state }}</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="patientZip">Zip Code</label>
+            <input id="patientZip" type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="form-row">
+          <div class="col">
+            <label for="mrn">MRN</label>
+            <input id="mrn" type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <label for="ssn">SSN</label>
+            <input id="ssn" type="text" class="form-control form-control-sm">
+          </div>
+          <div class="col">
+            <label for="dob">DOB</label>
+            <input id="dob" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="dateOfBirth" value="{{dateOfBirth | date: 'dd/mm/yyyy'}}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Demographics</h5>
+
+        <div class="form-row">
+          <div class="col-sm-2">
+            <label for="gender">Gender</label>
+            <select id="gender" class="form-control form-control-sm">
+              <option selected>Pick...</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="heightFeet">Height</label>
+            <div class="input-group input-group-sm">
+              <input id="heightFeet" type="text" class="form-control">
+              <span id="heightFeet-addon" class="input-group-addon">ft</span>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <label for="heightInches">&nbsp;</label>
+            <div class="input-group input-group-sm">
+              <input id="heightInches" type="text" class="form-control">
+              <span id="heightInches-addon" class="input-group-addon">in</span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <label for="weight">Weight</label>
+            <div class="input-group input-group-sm">
+              <input id="weight" type="text" class="form-control">
+              <span id="weight-addon" class="input-group-addon">lbs</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-4">
+            <label for="lastHospitalized">Last Hospitalization</label>
+            <input id="lastHospitalized" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Notes</h5>
+
+        <textarea id="demographicsNotes" class="form-control" rows="7"></textarea>
+
+      </div>
+    </div>
+  </div>
+</div>
