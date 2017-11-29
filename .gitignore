@@ -3,6 +3,6 @@
 package-lock.json
 # dependencies
 node_modules/
-public/bower_components/
+app/public/bower_components/
 # runtime
-.vagrant/
+env/.vagrant/
