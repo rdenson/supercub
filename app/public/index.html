@@ -8,6 +8,12 @@
     <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
 
     <style>
+      .app-footer {
+        margin-top: 45px;
+        padding: 35px 0 35px;
+        border-top: 1px solid #DFDFDF;
+        line-height: 90%;
+      }
       .form-surround {
         margin-bottom: 5px;
         margin-top: 5px;
@@ -71,11 +77,11 @@
       <div ng-view=""></div>
 
       <!-- footer -->
-      <div style="margin-top: 45px; padding: 35px 0 35px; border-top: 1px solid #DFDFDF">
+      <div class="app-footer">
         <div class="d-flex justify-content-center">
           <p class="text-muted text-center"><small>
             designed and built by Denson Ventures; icons from Open Iconic<br>
-            application ver. {{ appVersion }}
+            ver.{{ appVersion }}
           </small></p>
         </div>
       </div>

@@ -1,23 +1,34 @@
 var blake = require('blakejs'),
     childProcess = require('child_process'),
+    kq = require('q'),
     uuid = require('uuid');
 
 
 function handler(svr) {
-  svr.get('/index', function(req, res, nxt) {
-    res.send('<h1>Welcome to the index!</h1>');
-  });
-
+  /*
+   * GET /v1/user
+   * retrieves a user session
+   */
   svr.get('/v1/user', function(request, response) {
     var session = svr.get('session'),
         token = request.headers.token || '';
 
     session.get(token, function(err, reply) {
+      if( reply != null ){
+        //reset the token expiration
+        session.expire(token, svr.get('sessionTimeout'));
+      }
+
       response.json({ session: reply });
     });
   });
 
+  /*
+   * POST /v1/auth/user/{some_user_id}
+   * begin session for a known user
+   */
   svr.post('/v1/auth/user/:userid', function(request, response) {
+    //no password presented
     if( request.body.knowncred == undefined ){
       console.log('EHRLOG ' + svr.get('env') + ' [warning] - could not authenticate ' + request.params.userid + ', password not given');
       response.status(401).json({ message: 'your credentials could not be verified' });
@@ -28,8 +39,10 @@ function handler(svr) {
         passIn = blake.blake2bHex(request.body.knowncred),
         session = svr.get('session');
 
+    //query for specified user
     AppUser.findOne({ 'uid': userid }, 'uid cred').then(
       function(queryResult) {
+        //user not found
         if( queryResult == null ){
           console.log('EHRLOG ' + svr.get('env') + ' [warning] - could not authenticate ' + userid + ', user not found');
           response.status(401).json({ message: 'your credentials could not be verified' });
@@ -42,6 +55,7 @@ function handler(svr) {
             },
             userToken = uuid.v1();
 
+        //update the user's timing information for a login attempt
         AppUser.findByIdAndUpdate(queryResult._id, { $set: { 'dates.lastTry': new Date() } }, function(err) {
           if( err != null ){
             console.log('EHRLOG ' + svr.get('env') + ' [error] - could not update lastTry field for ' + userid);
@@ -49,14 +63,12 @@ function handler(svr) {
           }
         });
 
+        //success, our user has been accepted and validated
         if( passIn == queryResult.cred ){
           console.log('EHRLOG ' + svr.get('env') + ' [info] - credentials for ' + userid + ' validated, issuing session token');
-          session.set(userToken, JSON.stringify(sessionObject), 'EX', svr.get('sessionTimeout'), function(err) {
-            if( err != null ){
-              console.log('EHRLOG ' + svr.get('env') + ' [error] - redis command SET failed for key: ' + token);
-              console.log(err);
-            }
-          });
+          //cache session information
+          session.set(userToken, JSON.stringify(sessionObject), 'EX', svr.get('sessionTimeout'));
+          //update the user's timing information for a successful login
           AppUser.findByIdAndUpdate(queryResult._id, { $set: { 'dates.lastSuccessfulAccess': new Date() } }, function(err) {
             if( err != null ){
               console.log('EHRLOG ' + svr.get('env') + ' [error] - could not update lastSuccessfulAccess field for ' + userid);
@@ -64,8 +76,10 @@ function handler(svr) {
             }
           });
 
+          //we're done here, return to the client with a session identifier
           response.status(201).json({ token: userToken });
         } else {
+          //password invalid
           console.log('EHRLOG ' + svr.get('env') + ' [warning] - invalid password for ' + userid);
           response.status(401).json({ message: 'your credentials could not be verified' });
         }
@@ -78,6 +92,10 @@ function handler(svr) {
     );
   });
 
+  /*
+   * POST /v1/auth/user/{some_user_id}/destroy
+   * destroy session for a known user
+   */
   svr.post('/v1/auth/user/:userid/destroy', function(request, response) {
     var session = svr.get('session'),
         token = request.headers.token,
@@ -91,10 +109,12 @@ function handler(svr) {
         return;
       }
 
+      //drop the token
       if( reply > 0 ){
         console.log('EHRLOG ' + svr.get('env') + ' [info] - logout; removed ' + userid + '\'s token: ' + token);
         response.end();
       } else{
+        //the token could not be found... client application should attempt to authenticate
         console.log('EHRLOG ' + svr.get('env') + ' [debug] - token: ' + token + ', not found... nothing to do');
         response.end();
       }
@@ -184,28 +204,51 @@ function handler(svr) {
   });
 
   svr.get('/session/v1/tokens', function(request, response) {
-    var session = svr.get('session');
-        showKeys = !!Object.keys(request.query).length && request.query.detail != undefined
+    var detailPayload = {
+          redisContents: []
+        },
+        session = svr.get('session');
+        showKeys = !!Object.keys(request.query).length && request.query.detail != undefined,
+        simplePayload = {
+          tokenCount: 0
+        },
+        tokenPromises = [];
 
     if( showKeys ){
       session.keys('*', function(err, reply) {
-        if( err != null ){
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - redis command KEYS failed');
-          console.log(err);
-          return;
-        }
+        //we've got cache keys to examine
+        if( reply.length ){
+          //walk among the keys and get time-to-live information
+          reply.forEach(function(token) {
+            var ttlDO = kq.defer();
 
-        response.json({ redisContents: reply });
+            //inspect ttl for current token
+            session.ttl(token, function(err, reply) {
+              ttlDO.resolve({
+                cacheId: token,
+                ttl: reply + 's'
+              })
+            });
+            tokenPromises.push(ttlDO.promise);
+          });
+
+          //wait for all token ttls to have been fetched
+          kq.allSettled(tokenPromises).then(function(promiseResults) {
+            promiseResults.forEach(function(promiseResult) {
+              //assemble tokens and ttls
+              detailPayload.redisContents.push(promiseResult.value);
+            });
+            response.json(detailPayload);
+          });
+        } else{
+          //nothing in the cache, return default detail object
+          response.json(detailPayload);
+        }
       });
     } else{
       session.dbsize(function(err, reply) {
-        if( err != null ){
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - redis command DBSIZE failed');
-          console.log(err);
-          return;
-        }
-
-        response.json({ tokenCount: reply });
+        simplePayload.tokenCount = reply;
+        response.json(simplePayload);
       });
     }
   });
