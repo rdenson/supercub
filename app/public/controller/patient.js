@@ -2,6 +2,7 @@
   'use strict';
 
   var patientModule = angular.module('controller.patient', [
+        'resource.form-utilities',
         'ngRoute'
       ]);
 
@@ -14,65 +15,63 @@
 
   patientModule.controller('PatientController', [
     '$scope',
-    function($scope) {
-      $scope.page = {
-        patientDisplay: 'New Patient',
-        form: {
-          stateList: [
-            'Alabama',
-            'Alaska',
-            'Arizona',
-            'Arkansas',
-            'California',
-            'Colorado',
-            'Connecticut',
-            'Delaware',
-            'Florida',
-            'Georgia',
-            'Hawaii',
-            'Idaho',
-            'Illinois',
-            'Indiana',
-            'Iowa',
-            'Kansas',
-            'Kentucky',
-            'Louisiana',
-            'Maine',
-            'Maryland',
-            'Massachusetts',
-            'Michigan',
-            'Minnesota',
-            'Mississippi',
-            'Missouri',
-            'Montana',
-            'Nebraska',
-            'Nevada',
-            'New Hampshire',
-            'New Jersey',
-            'New Mexico',
-            'New York',
-            'North Carolina',
-            'North Dakota',
-            'Ohio',
-            'Oklahoma',
-            'Oregon',
-            'Pennsylvania',
-            'Rhode Island',
-            'South Carolina',
-            'South Dakota',
-            'Tennessee',
-            'Texas',
-            'Utah',
-            'Vermont',
-            'Virginia',
-            'Washington',
-            'West Virginia',
-            'Wisconsin',
-            'Wyoming'
-          ]
-        }
+    'FormUtilitiesResource',
+    function($scope, FormUtilitiesResource) {
+      $scope.form = {
+        genderList: FormUtilitiesResource.getGenders(),
+        languageList: FormUtilitiesResource.getLanguages(),
+        stateList: FormUtilitiesResource.getStates()
       };
-      //$scope.dateOfBirth
+      $scope.newDrugAllergy = '';
+      $scope.patient = {
+        demographics: {
+          drugAllergies: [],
+          gender: 'select...',
+          heightFeet: 0,
+          heightInches: 0,
+          language: 'English',
+          lastHospitalized: '',
+          physicianName: '',
+          physicianPhone: '',
+          physicianFax: '',
+          race: '',
+          weightLbs: 0
+        },
+        generalInfo: {
+          address: '',
+          city: '',
+          firstname: '',
+          lastname: '',
+          middlename: '',
+          state: 'Texas',
+          zipcode: ''
+        },
+        identity: {
+          dateOfBirth: '',
+          mrn: '',
+          ssn: ''
+        },
+        notes: ''
+      };
+      $scope.patientDisplay = 'New Patient';
+
+      //add a new allergy to a list of the patient's drug allergies
+      $scope.addDrugAllergy = function() {
+        //sanitize
+        var newAllergy = $scope.newDrugAllergy.trim();
+
+        //add the allergy if there's one to add
+        if( !!newAllergy.length ){
+          $scope.patient.demographics.drugAllergies.push($scope.newDrugAllergy);
+        }
+
+        //reset the form
+        $scope.newDrugAllergy = '';
+      };
+
+      $scope.savePatient = function() {
+        console.log($scope.patient);
+      };
     }
   ]);
 })();

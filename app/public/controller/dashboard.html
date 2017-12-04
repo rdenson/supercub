@@ -1,7 +1,60 @@
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Patients</h5>
-
-    <button type="button" class="btn btn-sm btn-outline-primary" ng-click="createPatient()">New Patient</button>
+<div class="row row-space-bottom">
+  <!-- app action bar -->
+  <div class="col">
+    <button type="button" class="btn btn-sm btn-primary" ng-click="createPatient()">New Patient</button>
+    <button type="button" class="btn btn-sm btn-primary" ng-click="createFacility()">Add Facility</button>
   </div>
+</div>
+
+<div class="row row-space-bottom">
+  <!-- Patients View -->
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <h5 class="card-title">Recent Patients</h5>
+        <div class="row">
+          <div class="col-md">
+            <table class="table table-sm table-hover" style="margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th scope="col">MRN</th>
+                  <th scope="col">Patient Name</th>
+                  <th scope="col">Facility</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="patient in patients">
+                  <td>{{ patient.mrn }}</td>
+                  <td>{{ patient.displayName }}</td>
+                  <td>{{ patient.facility }}</td>
+                  <td>
+                    <img src="assets/open-iconic/svg/magnifying-glass.svg" alt="inspect" class="std-icon" style="margin-right: 10px;">
+                    <img src="assets/open-iconic/svg/delete.svg" alt="inspect" class="std-icon">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- end patients view -->
+</div>
+<div class="row">
+  <!-- Facilities View -->
+  <div class="col-3" ng-repeat="facility in facilities">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ facility.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ facility.type }}</h6>
+        <p class="card-text">{{ facility.address }}</p>
+        <a href="#" class="card-link">View Facility</a>
+      </div>
+    </div>
+  </div>
+  <!-- end facilities view -->
 </div>

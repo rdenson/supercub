@@ -1,44 +1,44 @@
 <h3>{{ page.patientDisplay }}</h3>
-<div class="row" style="margin-bottom: 10px;">
+<div class="row row-space-bottom">
   <div class="col-8">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">General Information</h5>
 
+        <h5 class="card-title">General Information</h5>
         <div class="form-row">
           <div class="col">
             <label for="firstname">First Name</label>
-            <input id="firstname" type="text" class="form-control form-control-sm">
+            <input id="firstname" type="text" class="form-control form-control-sm" ng-model="patient.generalInfo.firstname">
           </div>
           <div class="col">
             <label for="middlename">Middle Name</label>
-            <input id="middlename" type="text" class="form-control form-control-sm">
+            <input id="middlename" type="text" class="form-control form-control-sm" ng-model="patient.generalInfo.middlename">
           </div>
           <div class="col">
             <label for="lastname">Last Name</label>
-            <input id="lastname" type="text" class="form-control form-control-sm">
+            <input id="lastname" type="text" class="form-control form-control-sm" ng-model="patient.generalInfo.lastname">
           </div>
         </div>
         <div class="form-row">
           <div class="col">
             <label for="patientAddress">Address</label>
-            <input id="patientAddress" type="text" class="form-control form-control-sm">
+            <input id="patientAddress" type="text" class="form-control form-control-sm" ng-model="patient.generalInfo.address">
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-6">
             <label for="patientCity">City</label>
-            <input id="patientCity" type="text" class="form-control form-control-sm">
+            <input id="patientCity" type="text" class="form-control form-control-sm" ng-model="patient.generalInfo.city">
           </div>
           <div class="col-md-4">
             <label for="patientState">State</label>
-            <select id="patientState" class="form-control form-control-sm">
-              <option ng-repeat="state in page.form.stateList">{{ state }}</option>
+            <select id="patientState" class="form-control form-control-sm" ng-model="patient.generalInfo.state">
+              <option ng-repeat="state in form.stateList">{{ state }}</option>
             </select>
           </div>
           <div class="col-md-2">
             <label for="patientZip">Zip Code</label>
-            <input id="patientZip" type="text" class="form-control form-control-sm">
+            <input id="patientZip" type="text" class="form-control form-control-sm" ng-model="patient.generalInfo.zipcode">
           </div>
         </div>
 
@@ -49,20 +49,21 @@
     <div class="card">
       <div class="card-body">
 
+        <h5 class="card-title">Identity</h5>
         <div class="form-row">
           <div class="col">
             <label for="mrn">MRN</label>
-            <input id="mrn" type="text" class="form-control form-control-sm">
+            <input id="mrn" type="text" class="form-control form-control-sm" ng-model="patient.identity.mrn">
           </div>
         </div>
         <div class="form-row">
           <div class="col">
             <label for="ssn">SSN</label>
-            <input id="ssn" type="text" class="form-control form-control-sm">
+            <input id="ssn" type="text" class="form-control form-control-sm" placeholder="999-99-9999" ng-model="patient.identity.ssn">
           </div>
           <div class="col">
             <label for="dob">DOB</label>
-            <input id="dob" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="dateOfBirth" value="{{dateOfBirth | date: 'dd/mm/yyyy'}}">
+            <input id="dob" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="patient.identity.dateOfBirth" value="{{dateOfBirth | date: 'dd/mm/yyyy'}}">
           </div>
         </div>
       </div>
@@ -70,61 +71,111 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-7">
+<div class="row row-space-bottom">
+  <div class="col-md">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Demographics</h5>
 
+        <h5 class="card-title">Demographics</h5>
         <div class="form-row">
           <div class="col-sm-2">
             <label for="gender">Gender</label>
-            <select id="gender" class="form-control form-control-sm">
-              <option selected>Pick...</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
+            <select id="gender" class="form-control form-control-sm" ng-model="patient.demographics.gender">
+              <option ng-repeat="gender in form.genderList">{{ gender }}</option>
             </select>
           </div>
-          <div class="col-sm-2">
+          <div class="col-sm-1">
             <label for="heightFeet">Height</label>
             <div class="input-group input-group-sm">
-              <input id="heightFeet" type="text" class="form-control">
+              <input id="heightFeet" type="text" class="form-control" ng-model="patient.demographics.heightFeet">
               <span id="heightFeet-addon" class="input-group-addon">ft</span>
             </div>
           </div>
-          <div class="col-sm-2">
+          <div class="col-sm-1">
             <label for="heightInches">&nbsp;</label>
             <div class="input-group input-group-sm">
-              <input id="heightInches" type="text" class="form-control">
+              <input id="heightInches" type="text" class="form-control" ng-model="patient.demographics.heightInches">
               <span id="heightInches-addon" class="input-group-addon">in</span>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <label for="weight">Weight</label>
             <div class="input-group input-group-sm">
-              <input id="weight" type="text" class="form-control">
+              <input id="weight" type="text" class="form-control" ng-model="patient.demographics.weightLbs">
               <span id="weight-addon" class="input-group-addon">lbs</span>
             </div>
+          </div>
+          <div class="col-sm-2">
+            <label for="language">Primary Language</label>
+            <select id="language" class="form-control form-control-sm" ng-model="patient.demographics.language">
+              <option ng-repeat="language in form.languageList">{{ language }}</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="race">Race</label>
+            <input id="race" class="form-control form-control-sm" ng-model="patient.demographics.race">
+          </div>
+        </div>
+        <div class="form-row form-surround">
+          <div class="col-sm">
+            <label for="newDrugAllergy">Known Drug Allergies</label>
+            <div class="input-group">
+              <input id="newDrugAllergy" type="text" class="form-control form-control-sm" placeholder="add a drug allergy" ng-model="newDrugAllergy">
+              <span class="input-group-btn">
+                <button class="btn btn-success" type="button" ng-click="addDrugAllergy()">add</button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm">
+            <input class="form-control form-control-sm text-center" type="text" placeholder="No Known Allergies" readonly ng-show="!patient.demographics.drugAllergies.length">
+            <table class="table table-sm table-striped table-bordered" ng-show="patient.demographics.drugAllergies.length">
+              <tbody>
+                <tr ng-repeat="allergy in patient.demographics.drugAllergies">
+                  <td>{{ allergy }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-4">
+            <label for="physicianName">Primary Care Physician</label>
+            <input id="physicianName" type="text" class="form-control form-control-sm" placeholder="Physician Name" ng-model="patient.demographics.physicianName">
+          </div>
+          <div class="col-sm-2">
+            <label for="physicianPhone">&nbsp;</label>
+            <input id="physicianPhone" type="text" class="form-control form-control-sm" placeholder="phone number" ng-model="patient.demographics.physicianPhone">
+          </div>
+          <div class="col-sm-3">
+            <label for="physicianFax">&nbsp;</label>
+            <input id="physicianFax" type="text" class="form-control form-control-sm" placeholder="fax" ng-model="patient.demographics.physicianFax">
           </div>
         </div>
         <div class="form-row">
           <div class="col-sm-4">
             <label for="lastHospitalized">Last Hospitalization</label>
-            <input id="lastHospitalized" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy">
+            <input id="lastHospitalized" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="patient.demographics.lastHospitalized">
+          </div>
+        </div>
+        <div class="form-row form-surround">
+          <div class="col-sm">
+            <label for="demographicsNotes">Notes</label>
+            <textarea id="demographicsNotes" class="form-control" rows="7" ng-model="patient.notes"></textarea>
           </div>
         </div>
 
       </div>
     </div>
   </div>
-  <div class="col-md-5">
+</div>
+
+<div class="row">
+  <div class="col-md">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Notes</h5>
-
-        <textarea id="demographicsNotes" class="form-control" rows="7"></textarea>
-
+        <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="savePatient()">Save Patient</button>
       </div>
     </div>
   </div>
