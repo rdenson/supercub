@@ -70,6 +70,7 @@
     'AuthUserResource',
     'UserResource',
     function($cookies, $http, $location, $rootScope, $route, $scope, AuthUserResource, UserResource) {
+      $scope.appVersion = '';
       //this controller's user object
       $scope.user = {
         verified: false,
@@ -94,6 +95,16 @@
           function(err) { console.log(err); }
         );
       };
+
+      //only fetch the application version "once" (if unavailable)
+      if( !$scope.appVersion.length ){
+        console.log('here ' + new Date().getTime());
+        //ugly but, quick call to server api
+        $http.get('/version', ).then(
+          function(resp) { $scope.appVersion = resp.data.sha.slice(0, 7); },
+          function() { $scope.appVersion = 'unknown'; }
+        );
+      }
 
       $rootScope.$on('$routeChangeStart', function(next, current) {
         var sessionID = $cookies.get('token');

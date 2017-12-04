@@ -1,4 +1,5 @@
 var blake = require('blakejs'),
+    childProcess = require('child_process'),
     uuid = require('uuid');
 
 
@@ -207,6 +208,20 @@ function handler(svr) {
         response.json({ tokenCount: reply });
       });
     }
+  });
+
+  /*
+   * application version fetch; outputs a git SHA1 hash
+   */
+  svr.get('/version', function(request, response) {
+    //assumes a linux box installation
+    childProcess.exec('git rev-list HEAD | head -n1', function(err, stdout, stderr) {
+      if( err != null ){
+        response.status(500).end()
+      }
+
+      response.json({sha: stdout.replace('\n', '')});
+    });
   });
 }
 

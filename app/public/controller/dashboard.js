@@ -60,7 +60,7 @@
       $scope.createPatient = function() {
         $location.path('/patient');
       };
-      $scope.createPatient = function() {
+      $scope.createFacility = function() {
         $location.path('/facility');
       };
     }
