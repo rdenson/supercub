@@ -10,6 +10,15 @@
       var FormUtilitiesResource = {},
           choicePlaceholder = 'select...';
 
+      FormUtilitiesResource.getFacilityTypes = function() {
+        return [
+          choicePlaceholder,
+          'Community Center',
+          'Long-Term Care',
+          'Skilled Nursing'
+        ]
+      };
+
       FormUtilitiesResource.getGenders = function() {
         return [
           choicePlaceholder,

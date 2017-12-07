@@ -1,0 +1,39 @@
+/*
+ *
+ */
+.app-footer {
+  margin-top: 45px;
+  padding: 35px 0 35px;
+  border-top: 1px solid #DFDFDF;
+  line-height: 90%;
+}
+.card-divider {
+  margin-top: 12px;
+  padding-top: 5px;
+  border-top: 1px solid #CFCFCF;
+}
+.form-surround {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.page-title-tab {
+  padding: 0 15px 0 15px;
+  border: 2px solid #859EAF;
+}
+.row-space-bottom {
+  margin-bottom: 10px;
+}
+.sm-icon {
+  height: 10px;
+  width: 10px;
+}
+.std-icon {
+  height: 16px;
+  width: 16px;
+}
+.text-fail {
+  color: #CC3333;
+}
+.text-success {
+  color: #009900;
+}

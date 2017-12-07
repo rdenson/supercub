@@ -4,6 +4,7 @@
   var consoApp = angular.module('ConSo', [
         'controller.auth',
         'controller.dashboard',
+        'controller.facility',
         'controller.patient',
         'resource.auth-user',
         'resource.user',
@@ -98,7 +99,6 @@
 
       //only fetch the application version "once" (if unavailable)
       if( !$scope.appVersion.length ){
-        console.log('here ' + new Date().getTime());
         //ugly but, quick call to server api
         $http.get('/version', ).then(
           function(resp) { $scope.appVersion = resp.data.sha.slice(0, 7); },

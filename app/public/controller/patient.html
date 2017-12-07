@@ -1,4 +1,4 @@
-<h3>{{ page.patientDisplay }}</h3>
+<h3><span class="border-top-0 rounded-bottom page-title-tab">{{ patientDisplay }}</span></h3>
 <div class="row row-space-bottom">
   <div class="col-8">
     <div class="card">
@@ -66,6 +66,7 @@
             <input id="dob" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="patient.identity.dateOfBirth" value="{{dateOfBirth | date: 'dd/mm/yyyy'}}">
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -145,12 +146,12 @@
             <input id="physicianName" type="text" class="form-control form-control-sm" placeholder="Physician Name" ng-model="patient.demographics.physicianName">
           </div>
           <div class="col-sm-2">
-            <label for="physicianPhone">&nbsp;</label>
-            <input id="physicianPhone" type="text" class="form-control form-control-sm" placeholder="phone number" ng-model="patient.demographics.physicianPhone">
+            <label for="physicianPhone">Phone</label>
+            <input id="physicianPhone" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="patient.demographics.physicianPhone">
           </div>
-          <div class="col-sm-3">
-            <label for="physicianFax">&nbsp;</label>
-            <input id="physicianFax" type="text" class="form-control form-control-sm" placeholder="fax" ng-model="patient.demographics.physicianFax">
+          <div class="col-sm-2">
+            <label for="physicianFax">Fax</label>
+            <input id="physicianFax" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="patient.demographics.physicianFax">
           </div>
         </div>
         <div class="form-row">

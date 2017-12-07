@@ -6,3 +6,4 @@ node_modules/
 app/public/bower_components/
 # runtime
 env/.vagrant/
+aws/
