@@ -3,6 +3,7 @@
 
   var patientModule = angular.module('controller.patient', [
         'resource.form-utilities',
+        'resource.patient',
         'ngRoute'
       ]);
 
@@ -16,7 +17,8 @@
   patientModule.controller('PatientController', [
     '$scope',
     'FormUtilitiesResource',
-    function($scope, FormUtilitiesResource) {
+    'PatientResource',
+    function($scope, FormUtilitiesResource, PatientResource) {
       $scope.form = {
         genderList: FormUtilitiesResource.getGenders(),
         languageList: FormUtilitiesResource.getLanguages(),
@@ -70,7 +72,10 @@
       };
 
       $scope.savePatient = function() {
-        console.log($scope.patient);
+        PatientResource.save($scope.patient).then(
+          function() { console.log('success'); console.log(arguments[0]); },
+          function() { console.log('failure!'); console.log(arguments[0]); },
+        );
       };
     }
   ]);

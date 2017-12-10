@@ -1,27 +1,13 @@
 var blake = require('blakejs'),
     childProcess = require('child_process'),
     kq = require('q'),
+    patient = require('../api/patient'),
     uuid = require('uuid');
 
 
 function handler(svr) {
-  /*
-   * GET /v1/user
-   * retrieves a user session
-   */
-  svr.get('/v1/user', function(request, response) {
-    var session = svr.get('session'),
-        token = request.headers.token || '';
-
-    session.get(token, function(err, reply) {
-      if( reply != null ){
-        //reset the token expiration
-        session.expire(token, svr.get('sessionTimeout'));
-      }
-
-      response.json({ session: reply });
-    });
-  });
+  //for all api calls related to a specific concept
+  patient.api(svr);
 
   /*
    * POST /v1/auth/user/{some_user_id}
@@ -101,6 +87,7 @@ function handler(svr) {
         token = request.headers.token,
         userid = request.params.userid;
 
+    //TODO: verify that token and userid are related
     session.del(token, function(err, reply) {
       if( err != null ){
         console.log('EHRLOG ' + svr.get('env') + ' [error] - redis command DEL failed for key: ' + token);
@@ -118,6 +105,24 @@ function handler(svr) {
         console.log('EHRLOG ' + svr.get('env') + ' [debug] - token: ' + token + ', not found... nothing to do');
         response.end();
       }
+    });
+  });
+
+  /*
+   * GET /v1/user
+   * retrieves a user session
+   */
+  svr.get('/v1/user', function(request, response) {
+    var session = svr.get('session'),
+        token = request.headers.token || '';
+
+    session.get(token, function(err, reply) {
+      if( reply != null ){
+        //reset the token expiration
+        session.expire(token, svr.get('sessionTimeout'));
+      }
+
+      response.json({ session: reply });
     });
   });
 
