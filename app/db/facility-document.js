@@ -45,6 +45,9 @@ function FacilityDocument(serverObject) {
           });
 
           return createDO.promise;
+        },
+        list: function() {
+          return facilityModel.find({}, 'address city name state type zipcode');
         }
       };
 

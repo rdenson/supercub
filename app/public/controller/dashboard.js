@@ -2,6 +2,7 @@
   'use strict';
 
   var dashboardModule = angular.module('controller.dashboard', [
+        'resource.facility',
         'ngRoute'
       ]);
 
@@ -15,9 +16,10 @@
   dashboardModule.controller('DashboardController', [
     '$location',
     '$scope',
-    function($location, $scope) {
+    'FacilityResource',
+    function($location, $scope, FacilityResource) {
       $scope.facilities = [
-        {
+        /*{
           address: '2000 Lyons Ave, Houston, TX 77020',
           id: 43892,
           name: 'Caring Hearts',
@@ -34,7 +36,7 @@
           id: 43894,
           name: 'Southern Shores',
           type: 'Skilled Nursing'
-        },
+        },*/
       ];
       $scope.patients = [
         {
@@ -56,6 +58,10 @@
           mrn: '11-00002381K'
         },
       ];
+
+      FacilityResource.list().then(function(resourceResult) {
+        $scope.facilities = resourceResult.listing;
+      });
 
       $scope.createPatient = function() {
         $location.path('/patient');

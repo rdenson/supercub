@@ -45,14 +45,21 @@
   <!-- end patients view -->
 </div>
 <div class="row">
+  <!-- for when we have no facilities -->
+  <div class="col text-center" ng-show="!facilities.length">
+    no facilities found
+  </div>
   <!-- Facilities View -->
   <div class="col-3" ng-repeat="facility in facilities">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{ facility.name }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{ facility.type }}</h6>
-        <p class="card-text">{{ facility.address }}</p>
-        <a href="#" class="card-link">View Facility</a>
+        <p class="card-text">
+          {{ facility.address }}<br>
+          {{ facility.city}}, {{ facility.state }} {{ facility.zipcode }}
+        </p>
+        <a href="#!/facility/{{ facility._id }}" class="card-link">View Facility</a>
       </div>
     </div>
   </div>

@@ -29,6 +29,21 @@
         return apiResponseDO.promise;
       };
 
+      FacilityResource.list = function() {
+        var apiResponseDO = $q.defer();
+
+        $http.get(RESOURCE_BASE_PATH + '/list').then(
+          function(resp) {
+            apiResponseDO.resolve(apiResponse.parse(resp));
+          },
+          function(err) {
+            apiResponseDO.reject(apiResponse.parse(err));
+          }
+        );
+
+        return apiResponseDO.promise;
+      };
+
       return FacilityResource;
     }
   ]);
