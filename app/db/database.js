@@ -1,4 +1,5 @@
 var auditDocument = require('./audit-document'),
+    facilityDocument = require('./facility-document');
     patientDocument = require('./patient-document');
 
 
@@ -16,6 +17,7 @@ var auditDocument = require('./audit-document'),
 //  returns actions, wrapper functions for data access
 function handler(svr) {
   auditDocument(svr);
+  facilityDocument(svr);
   patientDocument(svr);
 }
 

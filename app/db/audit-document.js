@@ -12,14 +12,14 @@ function AuditDocument(serverObject) {
   var auditModel = db.model('Audit', auditSchema);
 
   var documentFunctions = {
-    addEntry: function(modelObject) {
-      var document = new auditModel(modelObject);
+        addEntry: function(modelObject) {
+          var document = new auditModel(modelObject);
 
-      document.save(function(err) {
-        //TODO: report error
-      });
-    }
-  };
+          document.save(function(err) {
+            //TODO: report error
+          });
+        }
+      };
 
   //move to set on a callback?
   serverObject.set('AuditDocument', documentFunctions);

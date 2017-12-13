@@ -2,6 +2,7 @@
   'use strict';
 
   var facilityModule = angular.module('controller.facility', [
+        'resource.facility',
         'resource.form-utilities',
         'ngRoute'
       ]);
@@ -14,9 +15,11 @@
   }]);
 
   facilityModule.controller('FacilityController', [
+    '$location',
     '$scope',
+    'FacilityResource',
     'FormUtilitiesResource',
-    function($scope, FormUtilitiesResource) {
+    function($location, $scope, FacilityResource, FormUtilitiesResource) {
       $scope.facility = {
         address: '',
         city: '',
@@ -38,7 +41,24 @@
       $scope.facilityDisplay = 'New Facility';
       $scope.form = {
         facilityTypeList: FormUtilitiesResource.getFacilityTypes(),
+        failureMessage: '',
+        hasFailure: false,
         stateList: FormUtilitiesResource.getStates()
+      };
+
+      $scope.createFacility = function() {
+        FacilityResource.create($scope.facility).then(
+          function(resourceResult) {
+            if( !resourceResult.isError ){
+              $location.path('/');
+            }
+
+          },
+          function(resourceError) {
+            $scope.form.hasFailure = resourceError.isError;
+            $scope.form.failureMessage = resourceError.apiMessage;
+          }
+        );
       };
     }
   ]);

@@ -13,12 +13,11 @@ function PatientApi(svr) {
    */
   svr.post(API_BASE, function(request, response) {
     var authDO = kq.defer(),
+        //TODO: needs to come into the POST as part of the payload
         isNew = true,
         //marshal the post body into a patient model
         patientData = {
-          //TODO: needs to come into the POST as part of the payload
           active: true,
-          //-------------
           demographics: JSON.parse(request.body.demographics),
           generalInfo: JSON.parse(request.body.generalInfo),
           identity: JSON.parse(request.body.identity),

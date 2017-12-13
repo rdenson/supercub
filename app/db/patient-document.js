@@ -63,6 +63,7 @@ function PatientDocument(serverObject) {
                 queryReply: queryResult
               });
             } else{
+              //this needs to happen before we reach here...
               modelObject.dates = {
                 created: new Date(),
                 modified: new Date()
@@ -85,7 +86,7 @@ function PatientDocument(serverObject) {
 
       return saveDO.promise;
     }
-  }
+  };
 
   //move to set on a callback?
   serverObject.set('PatientDocument', documentFunctions);

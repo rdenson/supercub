@@ -1,5 +1,5 @@
 <h3><span class="border-top-0 rounded-bottom page-title-tab">{{ facilityDisplay }}</span></h3>
-<div class="row row-spce-bottom">
+<div class="row row-space-bottom">
   <div class="col-md-8">
     <div class="card">
       <div class="card-body">
@@ -40,8 +40,8 @@
         </div>
         <div class="form-row">
           <div class="col-md">
-            <label for="demographicsNotes">Notes</label>
-            <textarea id="demographicsNotes" class="form-control" rows="7" ng-model="facility.notes"></textarea>
+            <label for="facillityNotes">Notes</label>
+            <textarea id="facillityNotes" class="form-control" rows="7" ng-model="facility.notes"></textarea>
           </div>
         </div>
 
@@ -64,23 +64,35 @@
             <input id="facilityFax" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.fax">
           </div>
         </div>
-        <div class="form-row" style="margin-top: 12px; padding-top: 5px; border-top: 1px solid #CFCFCF;">
+        <div class="form-row card-divider">
           <div class="col-md-8">
-            <label for="facilitContact">Contact Person</label>
+            <label for="facilityContact">Contact Person</label>
             <input id="facilityContact" type="text" class="form-control form-control-sm" placeholder="Name" ng-model="facility.contact.person.name">
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-6">
-            <label for="facilitContact">Phone</label>
+            <label for="facilityContact">Phone</label>
             <input id="facilityContactPhone" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.person.phone">
           </div>
           <div class="col-md-3">
-            <label for="facilitContactExtension">Ext.</label>
-            <input id="facilitContactExtension" type="text" class="form-control form-control-sm" placeholder="1234" ng-model="facility.contact.person.extension">
+            <label for="facilityContactExtension">Ext.</label>
+            <input id="facilityContactExtension" type="text" class="form-control form-control-sm" placeholder="1234" ng-model="facility.contact.person.extension">
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md">
+    <div class="card">
+      <div class="card-body">
+        <!-- user alert / form validation needs work -->
+        <div class="alert alert-danger" ng-show="form.hasFailure">{{ form.failureMessage }}</div>
+        <button type="button" class="btn btn-primary btn-sm btn-block" ng-disabled="!facility.name.length" ng-click="createFacility()">Create Facility</button>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 var blake = require('blakejs'),
     childProcess = require('child_process'),
+    facility = require('../api/facility'),
     kq = require('q'),
     patient = require('../api/patient'),
     uuid = require('uuid');
@@ -7,6 +8,7 @@ var blake = require('blakejs'),
 
 function handler(svr) {
   //for all api calls related to a specific concept
+  facility.api(svr);
   patient.api(svr);
 
   /*
