@@ -38,7 +38,7 @@ function PatientApi(svr) {
         },
         function(queryError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - DELETE ' + API_BASE + '/' + request.params.patientId + ' failed');
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - DELETE ' + API_BASE + '/' + patientId + ' failed');
           console.log(queryError);
           response.status(500).json();
         }
@@ -46,7 +46,40 @@ function PatientApi(svr) {
     });
   });
 
-  svr.get(API_BASE + '/list', function(request, response) {
+  svr.get(API_BASE + '/:patientId', function(request, response) {
+    var authDO = kq.defer(),
+        patientId = request.params.patientId,
+        token = request.headers.token || '';
+
+    //verify an active session; there are no roles or rights to verify yet
+    session.get(token, function(err, reply) {
+      if( reply == null ){
+        response.status(401).end();
+        authDO.reject();
+      } else{
+        authDO.resolve(JSON.parse(reply));
+      }
+    });
+
+    //if we're authorized...
+    authDO.promise.then(function(currentSession) {
+      patientDocument.get(patientId).then(
+        function(queryResult) {
+          response.json({ patient: queryResult });
+        },
+        function(queryError) {
+          //try to explain the error we received
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/' + patientId + ' failed');
+          console.log(queryError);
+          response.status(500).json();
+        }
+      );
+    });
+  });
+
+  //does this route belong here?
+  //maybe the route isn't appropriately named
+  svr.get(API_BASE + '/report/recentlyModified', function(request, response) {
     var authDO = kq.defer(),
         token = request.headers.token || '';
 
@@ -69,7 +102,7 @@ function PatientApi(svr) {
         },
         function(queryError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + '/list' + ' failed');
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/list' + ' failed');
           console.log(queryError);
           response.status(500).json();
         }

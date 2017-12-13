@@ -42,6 +42,10 @@ function PatientDocument(serverObject) {
 
   //function set (object) exposed for public interaction with the Patient document
   var documentFunctions = {
+        get: function(patientId) {
+          return patientModel.findOne({ _id: patientId });
+        },
+
         inactivate: function(patientId) {
           return patientModel.update({ _id: patientId }, { $set: { active: false } });
         },

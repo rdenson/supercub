@@ -26,11 +26,11 @@
               </thead>
               <tbody>
                 <tr ng-repeat="patient in patients">
-                  <td>{{ patient.identity.mrn }}</td>
-                  <td>{{ patient.generalInfo.lastname }}, {{ patient.generalInfo.firstname }}</td>
-                  <td>{{ patient.facility }}</td>
+                  <td ng-click="viewChart(patient._id)">{{ patient.identity.mrn }}</td>
+                  <td ng-click="viewChart(patient._id)">{{ patient.generalInfo.lastname }}, {{ patient.generalInfo.firstname }}</td>
+                  <td ng-click="viewChart(patient._id)">{{ patient.facility }}</td>
                   <td>
-                    <img src="assets/open-iconic/svg/magnifying-glass.svg" alt="inspect" class="std-icon" style="margin-right: 10px;">
+                    <img src="assets/open-iconic/svg/wrench.svg" alt="inspect" class="std-icon" style="margin-right: 10px;">
                     <img src="assets/open-iconic/svg/delete.svg" alt="delete" class="std-icon" ng-click="deletePatient(patient._id)">
                   </td>
                 </tr>

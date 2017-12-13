@@ -20,6 +20,10 @@
   padding: 0 15px 0 15px;
   border: 2px solid #859EAF;
 }
+.patient-chart-title {
+  font-weight: 300;
+  line-height: 1.2;
+}
 .row-space-bottom {
   margin-bottom: 10px;
 }

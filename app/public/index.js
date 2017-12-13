@@ -6,6 +6,7 @@
         'controller.dashboard',
         'controller.facility',
         'controller.patient',
+        'controller.patient-chart',
         'resource.auth-user',
         'resource.user',
         'ngCookies'

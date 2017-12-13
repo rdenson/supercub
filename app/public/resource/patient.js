@@ -28,10 +28,25 @@
         return apiResponseDO.promise;
       };
 
+      PatientResource.get = function(patientId) {
+        var apiResponseDO = $q.defer();
+
+        $http.get(RESOURCE_BASE_PATH + '/' + patientId).then(
+          function(resp) {
+            apiResponseDO.resolve(apiResponse.parse(resp));
+          },
+          function(err) {
+            apiResponseDO.reject(apiResponse.parse(err));
+          }
+        );
+
+        return apiResponseDO.promise;
+      };
+
       PatientResource.list = function() {
         var apiResponseDO = $q.defer();
 
-        $http.get(RESOURCE_BASE_PATH + '/list').then(
+        $http.get(RESOURCE_BASE_PATH + '/report/recentlyModified').then(
           function(resp) {
             apiResponseDO.resolve(apiResponse.parse(resp));
           },
