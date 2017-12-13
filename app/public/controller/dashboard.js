@@ -3,6 +3,7 @@
 
   var dashboardModule = angular.module('controller.dashboard', [
         'resource.facility',
+        'resource.patient',
         'ngRoute'
       ]);
 
@@ -17,7 +18,8 @@
     '$location',
     '$scope',
     'FacilityResource',
-    function($location, $scope, FacilityResource) {
+    'PatientResource',
+    function($location, $scope, FacilityResource, PatientResource) {
       $scope.facilities = [
         /*{
           address: '2000 Lyons Ave, Houston, TX 77020',
@@ -39,7 +41,7 @@
         },*/
       ];
       $scope.patients = [
-        {
+        /*{
           displayName: 'Columbia, Jennifer',
           facility: 'Downtown',
           id:291,
@@ -56,18 +58,33 @@
           facility: 'Caring Hearts',
           id:293,
           mrn: '11-00002381K'
-        },
+        },*/
       ];
 
       FacilityResource.list().then(function(resourceResult) {
         $scope.facilities = resourceResult.listing;
       });
 
+      function loadRecentPatients() {
+        PatientResource.list().then(function(resourceResult) {
+          $scope.patients = resourceResult.listing;
+        });
+      }
+
+      loadRecentPatients();
+
+      $scope.createFacility = function() {
+        $location.path('/facility');
+      };
+
       $scope.createPatient = function() {
         $location.path('/patient');
       };
-      $scope.createFacility = function() {
-        $location.path('/facility');
+
+      $scope.deletePatient = function(patientId) {
+        PatientResource.delete(patientId).then(function() {
+          loadRecentPatients();
+        });
       };
     }
   ]);

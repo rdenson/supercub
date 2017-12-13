@@ -13,6 +13,36 @@
       var RESOURCE_BASE_PATH = '/v1/patient',
           PatientResource = {};
 
+      PatientResource.delete = function(patientId) {
+        var apiResponseDO = $q.defer();
+
+        $http.delete(RESOURCE_BASE_PATH + '/' + patientId).then(
+          function(resp) {
+            apiResponseDO.resolve(apiResponse.parse(resp));
+          },
+          function(err) {
+            apiResponseDO.reject(apiResponse.parse(err));
+          }
+        );
+
+        return apiResponseDO.promise;
+      };
+
+      PatientResource.list = function() {
+        var apiResponseDO = $q.defer();
+
+        $http.get(RESOURCE_BASE_PATH + '/list').then(
+          function(resp) {
+            apiResponseDO.resolve(apiResponse.parse(resp));
+          },
+          function(err) {
+            apiResponseDO.reject(apiResponse.parse(err));
+          }
+        );
+
+        return apiResponseDO.promise;
+      };
+
       PatientResource.save = function(patientModel) {
         var apiResponseDO = $q.defer(),
             payload = patientModel;

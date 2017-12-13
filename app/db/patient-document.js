@@ -42,51 +42,72 @@ function PatientDocument(serverObject) {
 
   //function set (object) exposed for public interaction with the Patient document
   var documentFunctions = {
-    /*
-     * save api
-     * maybe this should be two functions...
-     *  create
-     *  update
-     */
-    save: function(modelObject, isNewPatient) {
-      var checkExistingQuery = {
-            'identity.ssn': modelObject.identity.ssn
-          },
-          saveDO = kq.defer();
+        inactivate: function(patientId) {
+          return patientModel.update({ _id: patientId }, { $set: { active: false } });
+        },
 
-      if( isNewPatient ){
-        patientModel.findOne(checkExistingQuery, '_id generalInfo.firstname generalInfo.middlename generalInfo.lastname identity.mrn').then(
-          function(queryResult) {
-            if( queryResult != null ){
-              saveDO.reject({
-                message: 'a patient with that social security number already exists',
-                queryReply: queryResult
-              });
-            } else{
-              //this needs to happen before we reach here...
-              modelObject.dates = {
-                created: new Date(),
-                modified: new Date()
-              };
+        list: function(resultsetCeiling) {
+          var fieldsToReturn = 'generalInfo.firstname generalInfo.lastname identity.mrn';
 
-              var document = new patientModel(modelObject);
-              document.save(function(err, savedDoc) {
-                saveDO.resolve(savedDoc._id);
-              });
-            }
-          },
-          function(err) {
-            saveDO.reject({
-              message: 'existence check query failed',
-              rawError: err
-            });
+          if( resultsetCeiling != null ){
+            //restricting the number of records returned also means that we should order by something...
+            //date modified, will work for now... but should be passed in as an argument later
+            return patientModel
+              .find({}, fieldsToReturn)
+              .where('active')
+              .equals(true)
+              .sort({ 'dates.modified': -1 })
+              .limit(resultsetCeiling);
+          } else{
+            return patientModel.find({}, fieldsToReturn);
           }
-        );
-      }
+        },
 
-      return saveDO.promise;
-    }
-  };
+        /*
+         * save api
+         * maybe this should be two functions...
+         *  create
+         *  update
+         */
+        save: function(modelObject, isNewPatient) {
+          var checkExistingQuery = {
+                'identity.ssn': modelObject.identity.ssn
+              },
+              saveDO = kq.defer();
+
+          if( isNewPatient ){
+            patientModel.findOne(checkExistingQuery, '_id generalInfo.firstname generalInfo.middlename generalInfo.lastname identity.mrn').then(
+              function(queryResult) {
+                if( queryResult != null ){
+                  saveDO.reject({
+                    message: 'a patient with that social security number already exists',
+                    queryReply: queryResult
+                  });
+                } else{
+                  //this needs to happen before we reach here...
+                  modelObject.dates = {
+                    created: new Date(),
+                    modified: new Date()
+                  };
+
+                  var document = new patientModel(modelObject);
+                  document.save(function(err, savedDoc) {
+                    saveDO.resolve(savedDoc._id);
+                  });
+                }
+              },
+              function(err) {
+                saveDO.reject({
+                  message: 'existence check query failed',
+                  rawError: err
+                });
+              }
+            );
+          }
+
+          return saveDO.promise;
+        }
+      };
 
   //move to set on a callback?
   serverObject.set('PatientDocument', documentFunctions);
