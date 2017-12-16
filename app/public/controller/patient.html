@@ -160,6 +160,14 @@
             <input id="lastHospitalized" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="patient.demographics.lastHospitalized">
           </div>
         </div>
+        <div class="form-row">
+          <div class="col-sm-4">
+            <label for="facility">Facility</label>
+            <select id="facility" class="form-control form-control-sm" ng-model="patient.facility">
+              <option ng-repeat="facility in form.facilityList" value="{{ facility.value }}">{{ facility.display }}</option>
+            </select>
+          </div>
+        </div>
         <div class="form-row form-surround">
           <div class="col-sm">
             <label for="demographicsNotes">Notes</label>
@@ -176,6 +184,8 @@
   <div class="col-md">
     <div class="card">
       <div class="card-body">
+        <!-- user alert / form validation needs work -->
+        <div class="alert alert-danger" ng-show="form.hasFailure">{{ form.failureMessage }}</div>
         <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="savePatient()">Save Patient</button>
       </div>
     </div>

@@ -22,6 +22,7 @@ function PatientDocument(serverObject) {
           race: String,
           weightLbs: Number
         },
+        facility: db.Schema.Types.ObjectId,
         generalInfo: {
           address: String,
           city: String,
@@ -51,7 +52,7 @@ function PatientDocument(serverObject) {
         },
 
         list: function(resultsetCeiling) {
-          var fieldsToReturn = 'generalInfo.firstname generalInfo.lastname identity.mrn';
+          var fieldsToReturn = 'generalInfo.firstname generalInfo.lastname identity.mrn facility';
 
           if( resultsetCeiling != null ){
             //restricting the number of records returned also means that we should order by something...
@@ -61,7 +62,8 @@ function PatientDocument(serverObject) {
               .where('active')
               .equals(true)
               .sort({ 'dates.modified': -1 })
-              .limit(resultsetCeiling);
+              .limit(resultsetCeiling)
+              .populate({ path: 'facility', select: 'name', model: serverObject.get('FacilityDocument').getModel() });
           } else{
             return patientModel.find({}, fieldsToReturn);
           }

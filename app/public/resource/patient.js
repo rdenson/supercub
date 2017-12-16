@@ -46,7 +46,7 @@
       PatientResource.list = function() {
         var apiResponseDO = $q.defer();
 
-        $http.get(RESOURCE_BASE_PATH + '/report/recentlyModified').then(
+        $http.get(RESOURCE_BASE_PATH + '/query/recent').then(
           function(resp) {
             apiResponseDO.resolve(apiResponse.parse(resp));
           },

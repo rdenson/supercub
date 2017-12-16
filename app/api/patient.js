@@ -77,10 +77,9 @@ function PatientApi(svr) {
     });
   });
 
-  //does this route belong here?
-  //maybe the route isn't appropriately named
-  svr.get(API_BASE + '/report/recentlyModified', function(request, response) {
+  svr.get(API_BASE + '/query/recent', function(request, response) {
     var authDO = kq.defer(),
+        maxResults = Number.parseInt(request.query.ceiling) || 5,
         token = request.headers.token || '';
 
     //verify an active session; there are no roles or rights to verify yet
@@ -96,7 +95,7 @@ function PatientApi(svr) {
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
       //currently returning up to five patients
-      patientDocument.list(5).then(
+      patientDocument.list(maxResults).then(
         function(queryResult) {
           response.json({ listing: queryResult });
         },
@@ -109,6 +108,7 @@ function PatientApi(svr) {
       );
     });
   });
+
   /*
    * POST /v1/patient
    * creates or save a patient
@@ -121,6 +121,7 @@ function PatientApi(svr) {
         patientData = {
           active: true,
           demographics: JSON.parse(request.body.demographics),
+          facility: request.body.facility,
           generalInfo: JSON.parse(request.body.generalInfo),
           identity: JSON.parse(request.body.identity),
           notes: request.body.notes

@@ -46,6 +46,9 @@ function FacilityDocument(serverObject) {
 
           return createDO.promise;
         },
+        getModel: function() {
+          return facilityModel
+        },
         list: function() {
           return facilityModel.find({}, 'address city name state type zipcode').where('active').equals(true);
         }
