@@ -1,3 +1,17 @@
+<div class="row first-row-space">
+  <!-- action toolbar -->
+  <div class="col">
+    <div class="btn-toolbar">
+      <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-link" ng-click="returnToChart()">
+          <img src="assets/open-iconic/svg/arrow-left.svg" alt="delete" class="std-icon"> Return to Patient's Chart
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row row-space-bottom">
   <div class="col">
     <div class="card">
@@ -83,7 +97,7 @@
             <input id="signatureDate" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="document.suffix.signatureDate">
           </div>
         </div>
-        <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="saveDocument()">Save Note</button>
+        <button type="button" class="btn btn-primary btn-sm btn-block" ng-disabled="!document.preamble.visitDate.length" ng-click="saveDocument()">Save Note</button>
 
       </div>
     </div>

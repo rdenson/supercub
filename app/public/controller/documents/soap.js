@@ -19,9 +19,10 @@
   }]);
 
   soapDocumentModule.controller('SoapDocController', [
+    '$location',
     '$scope',
     'patientResource',
-    function($scope, patientResource) {
+    function($location, $scope, patientResource) {
       $scope.document = {
         assessment: '',
         objective: '',
@@ -38,7 +39,8 @@
         }
       };
       $scope.patient = {
-        facility: patientResource.patient.facility.name,
+        id: patientResource.patient._id,
+        facility: getFacility(patientResource.patient),
         name: patientResource.patient.generalInfo.lastname + ' '
           + patientResource.patient.generalInfo.middlename + ', '
           + patientResource.patient.generalInfo.firstname,
@@ -46,9 +48,21 @@
         ssn: patientResource.patient.identity.ssn
       }
 
+      $scope.returnToChart = function() {
+        $location.path('/patient/chart/' + $scope.patient.id);
+      };
+
       $scope.saveDocument = function() {
         console.log($scope.document);
       };
+
+      function getFacility(patientObject) {
+        if( angular.isDefined(patientObject.facility) ){
+          return patientObject.facility.name;
+        } else {
+          return 'no associated facility';
+        }
+      }
     }
   ]);
 })();
