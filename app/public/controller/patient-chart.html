@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col">
     <h1 class="patient-chart-title">
-      {{ patient.generalInfo.lastname }} {{ patient.generalInfo.middlename }}, {{ patient.generalInfo.firstname }} ({{ patient.identity.mrn }})
+      {{ patient.name }} ({{ patient.mrn }})
     </h1>
   </div>
 </div>
@@ -22,7 +22,7 @@
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <a class="dropdown-item" href="#">Medication Action Plan</a>
           <a class="dropdown-item" href="#">Medication List</a>
-          <a class="dropdown-item" href="#">SOAP Note</a>
+          <a class="dropdown-item" href="#!/chart/{{ patient.id }}/soap">SOAP Note</a>
         </div>
       </div>
     </div>
@@ -33,41 +33,63 @@
 </div>
 
 <div class="row row-space-bottom">
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card">
       <div class="card-body">
 
         <h5 class="card-title">Medication Action Plan</h5>
-        blah, blah
+        <h6 class="card-subtitle mb-2 text-muted">12/02/2017</h6>
+        <a href="#" class="card-link">View Document</a>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card">
       <div class="card-body">
 
         <h5 class="card-title">Medication List</h5>
-        blah, blah
+        <h6 class="card-subtitle mb-2 text-muted">12/02/2017</h6>
+        <a href="#" class="card-link">View Document</a>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card">
       <div class="card-body">
 
         <h5 class="card-title">SOAP</h5>
         <h6 class="card-subtitle mb-2 text-muted">12/07/2017</h6>
-        blah, blah
+        <a href="#" class="card-link">View Document</a>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card">
       <div class="card-body">
 
         <h5 class="card-title">SOAP</h5>
         <h6 class="card-subtitle mb-2 text-muted">12/11/2017</h6>
-        blah, blah
+        <a href="#" class="card-link">View Document</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+
+        <h5 class="card-title">SOAP</h5>
+        <h6 class="card-subtitle mb-2 text-muted">12/12/2017</h6>
+        <a href="#" class="card-link">View Document</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+
+        <h5 class="card-title">SOAP</h5>
+        <h6 class="card-subtitle mb-2 text-muted">12/15/2017</h6>
+        <a href="#" class="card-link">View Document</a>
       </div>
     </div>
   </div>

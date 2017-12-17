@@ -22,7 +22,13 @@
     '$scope',
     'patientResource',
     function($scope, patientResource) {
-      $scope.patient = patientResource.patient;
+      $scope.patient = {
+        id: patientResource.patient._id,
+        mrn: patientResource.patient.identity.mrn,
+        name: patientResource.patient.generalInfo.lastname + ' '
+          + patientResource.patient.generalInfo.middlename + ', '
+          + patientResource.patient.generalInfo.firstname
+      }
     }
   ]);
 })();

@@ -4,6 +4,7 @@
   var consoApp = angular.module('ConSo', [
         'controller.auth',
         'controller.dashboard',
+        'controller.documents-soap',
         'controller.facility',
         'controller.patient',
         'controller.patient-chart',

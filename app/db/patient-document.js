@@ -44,7 +44,9 @@ function PatientDocument(serverObject) {
   //function set (object) exposed for public interaction with the Patient document
   var documentFunctions = {
         get: function(patientId) {
-          return patientModel.findOne({ _id: patientId });
+          return patientModel
+            .findOne({ _id: patientId })
+            .populate({ path: 'facility', model: serverObject.get('FacilityDocument').getModel() });
         },
 
         inactivate: function(patientId) {

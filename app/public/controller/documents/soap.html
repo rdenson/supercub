@@ -1,0 +1,91 @@
+<div class="row row-space-bottom">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="form-row">
+          <div class="col-md-3">
+            <label for="facilityName">Facility Name</label>
+            <input id="facilityName" type="text" class="form-control form-control-sm" placeholder="{{ patient.facility }}" readonly>
+          </div>
+          <div class="col-md-2">
+            <label for="visitDate">Date of Visit</label>
+            <input id="visitDate" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="document.preamble.visitDate">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-8">
+            <label for="patientName">Patient</label>
+            <input id="patientName" type="text" class="form-control form-control-sm" placeholder="{{ patient.name }} ({{ patient.mrn }})" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="patientName">SSN</label>
+            <input id="patientName" type="text" class="form-control form-control-sm" placeholder="{{ patient.ssn }}" readonly>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row row-space-bottom">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="form-row">
+          <div class="col-md">
+            <label for="subjective">Subjective</label>
+            <textarea id="subjective" class="form-control" rows="7" ng-model="document.subjective"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md">
+            <label for="objective">Objective</label>
+            <textarea id="objective" class="form-control" rows="7" ng-model="document.objective"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md">
+            <label for="assessment">Assessment</label>
+            <textarea id="assessment" class="form-control" rows="7" ng-model="document.assessment"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md">
+            <label for="plan">Plan</label>
+            <textarea id="plan" class="form-control" rows="7" ng-model="document.plan"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="form-row" style="margin-bottom: 10px;">
+          <div class="col-md-8">
+            <label for="">Pharmacist</label>
+            <input id="pharmacistName" type="text" class="form-control form-control-sm" ng-model="document.suffix.pharmacistName">
+          </div>
+          <div class="col-md-2">
+            <label for="timeSpent">Time Spent</label>
+            <input id="timeSpent" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="document.suffix.timeSpent">
+          </div>
+          <div class="col-md-2">
+            <label for="signatureDate">Date</label>
+            <input id="signatureDate" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="document.suffix.signatureDate">
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="saveDocument()">Save Note</button>
+
+      </div>
+    </div>
+  </div>
+</div>
