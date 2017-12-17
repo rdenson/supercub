@@ -1,8 +1,12 @@
-<div class="row row-space-bottom">
-  <!-- app action bar -->
+<div class="row first-row-space">
+  <!-- action toolbar -->
   <div class="col">
-    <button type="button" class="btn btn-sm btn-primary" ng-click="createPatient()">New Patient</button>
-    <button type="button" class="btn btn-sm btn-primary" ng-click="createFacility()">Add Facility</button>
+    <div class="btn-toolbar">
+      <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-secondary" ng-click="createPatient()">Admit Patient</button>
+        <button type="button" class="btn btn-secondary" ng-click="createFacility()">Add Facility</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -30,7 +34,7 @@
                   <td ng-click="viewChart(patient._id)">{{ patient.generalInfo.lastname }}, {{ patient.generalInfo.firstname }}</td>
                   <td ng-click="viewChart(patient._id)">{{ patient.facility.name }}</td>
                   <td>
-                    <img src="assets/open-iconic/svg/wrench.svg" alt="inspect" class="std-icon" style="margin-right: 10px;">
+                    <img src="assets/open-iconic/svg/wrench.svg" alt="edit" class="std-icon" style="margin-right: 10px;">
                     <img src="assets/open-iconic/svg/delete.svg" alt="delete" class="std-icon" ng-click="deletePatient(patient._id)">
                   </td>
                 </tr>

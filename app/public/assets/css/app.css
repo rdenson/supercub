@@ -12,6 +12,10 @@
   padding-top: 5px;
   border-top: 1px solid #CFCFCF;
 }
+.first-row-space {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .form-surround {
   margin-bottom: 5px;
   margin-top: 5px;
