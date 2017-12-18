@@ -33,63 +33,14 @@
 </div>
 
 <div class="row row-space-bottom">
-  <div class="col-md-3">
+  <!-- associated forms -->
+  <div class="col-md-3" ng-repeat="form in formCollection">
     <div class="card">
       <div class="card-body">
 
-        <h5 class="card-title">Medication Action Plan</h5>
-        <h6 class="card-subtitle mb-2 text-muted">12/02/2017</h6>
-        <a href="#" class="card-link">View Document</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">Medication List</h5>
-        <h6 class="card-subtitle mb-2 text-muted">12/02/2017</h6>
-        <a href="#" class="card-link">View Document</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">SOAP</h5>
-        <h6 class="card-subtitle mb-2 text-muted">12/07/2017</h6>
-        <a href="#" class="card-link">View Document</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">SOAP</h5>
-        <h6 class="card-subtitle mb-2 text-muted">12/11/2017</h6>
-        <a href="#" class="card-link">View Document</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">SOAP</h5>
-        <h6 class="card-subtitle mb-2 text-muted">12/12/2017</h6>
-        <a href="#" class="card-link">View Document</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">SOAP</h5>
-        <h6 class="card-subtitle mb-2 text-muted">12/15/2017</h6>
-        <a href="#" class="card-link">View Document</a>
+        <h5 class="card-title">{{ form.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ form.lastModified }}</h6>
+        <a href="#!/chart/{{ form.preamble.patient }}/{{ form.routeName }}/{{ form._id }}" class="card-link">View Document</a>
       </div>
     </div>
   </div>

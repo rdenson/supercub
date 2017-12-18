@@ -20,6 +20,7 @@ function FormDocument(serverObject) {
           patientSsn: String,
           visitDate: String
         },
+        routeName: String,
         subjective: String,
         suffix: {
           pharmacistName: String,
@@ -46,6 +47,9 @@ function FormDocument(serverObject) {
           });
 
           return createDO.promise;
+        },
+        list: function() {
+          return formModel.find({}, 'dates.modified name routeName preamble.patient').where('active').equals(true);
         }
       };
 

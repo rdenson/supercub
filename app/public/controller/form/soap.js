@@ -25,8 +25,6 @@
     'FormResource',
     'patientResource',
     function($location, $scope, FormResource, patientResource) {
-      var patientChart = '/patient/chart/' + patientResource.patient._id;
-
       $scope.form = {
         assessment: '',
         name: 'SOAP Note',
@@ -39,6 +37,7 @@
           patientSsn: patientResource.patient.identity.ssn,
           visitDate: ''
         },
+        routeName: 'soap',
         subjective: '',
         suffix: {
           pharmacistName: '',
@@ -48,6 +47,8 @@
       };
 
       $scope.returnToChart = function() {
+        var patientChart = '/patient/chart/' + patientResource.patient._id;
+
         $location.path(patientChart);
       };
 
@@ -55,8 +56,7 @@
         FormResource.create($scope.form).then(
           function(resourceResult) {
             if( !resourceResult.isError ){
-              $location.path(patientChart);
-              console.log('need to return to' + patientChart);
+              $scope.returnToChart();
             }
 
           },

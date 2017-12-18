@@ -29,6 +29,21 @@
         return apiResponseDO.promise;
       };
 
+      FormResource.listForms = function() {
+        var apiResponseDO = $q.defer();
+
+        $http.get(RESOURCE_BASE_PATH + '/query/list').then(
+          function(resp) {
+            apiResponseDO.resolve(apiResponse.parse(resp));
+          },
+          function(err) {
+            apiResponseDO.reject(apiResponse.parse(err));
+          }
+        );
+
+        return apiResponseDO.promise;
+      };
+
       return FormResource;
     }
   ]);
