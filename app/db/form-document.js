@@ -52,9 +52,9 @@ function FormDocument(serverObject) {
         getForm: function(formId) {
           return formModel.findOne({ _id: formId });
         },
-        list: function() {
+        list: function(patientId) {
           return formModel
-            .find({}, 'dates.modified name routeName preamble.patient preamble.visitDate')
+            .find({ 'preamble.patient': patientId }, 'dates.modified name routeName preamble.patient preamble.visitDate')
             .where('active')
             .equals(true)
             .sort({ 'preamble.visitDate': 1 });

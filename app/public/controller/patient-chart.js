@@ -41,7 +41,7 @@
       };
 
       function getAssociatedForms() {
-        FormResource.listForms().then(function(resourceResult) {
+        FormResource.listForms(patient._id).then(function(resourceResult) {
           var temporaryFiller = [
                 {
                   _id: 101,

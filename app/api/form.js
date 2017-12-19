@@ -40,6 +40,7 @@ function FormApi(svr) {
 
   svr.get(API_BASE + '/query/list', function(request, response) {
     var authDO = kq.defer(),
+        patientId = request.query.patientId,
         token = request.headers.token || '';
 
     //verify an active session; there are no roles or rights to verify yet
@@ -54,7 +55,7 @@ function FormApi(svr) {
 
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
-      formDocument.list().then(
+      formDocument.list(patientId).then(
         function(queryResult) {
           response.json({ listing: queryResult });
         },
