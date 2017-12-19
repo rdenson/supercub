@@ -12,7 +12,7 @@
       controller: 'PatientChartController',
       templateUrl: 'controller/patient-chart.html',
       resolve: {
-        patientResource: function($route, PatientResource) {
+        patient: function($route, PatientResource) {
           return PatientResource.get($route.current.params.patientId);
         }
       }
@@ -20,20 +20,25 @@
   }]);
 
   patientChartModule.controller('PatientChartController', [
+    '$location',
     '$scope',
     'FormResource',
-    'patientResource',
-    function($scope, FormResource, patientResource) {
+    'patient',
+    function($location, $scope, FormResource, patient) {
       $scope.formCollection = [];
       $scope.patient = {
-        id: patientResource.patient._id,
-        mrn: patientResource.patient.identity.mrn,
-        name: patientResource.patient.generalInfo.lastname + ' '
-          + patientResource.patient.generalInfo.middlename + ', '
-          + patientResource.patient.generalInfo.firstname
+        id: patient._id,
+        mrn: patient.identity.mrn,
+        name: patient.generalInfo.lastname + ' '
+          + patient.generalInfo.middlename + ', '
+          + patient.generalInfo.firstname
       }
 
       getAssociatedForms();
+
+      $scope.returnToDashboard = function() {
+        $location.path('/');
+      };
 
       function getAssociatedForms() {
         FormResource.listForms().then(function(resourceResult) {
@@ -43,7 +48,8 @@
                   lastModified: '12/02/2017',
                   name: 'Medication Action Plan',
                   preamble: {
-                    patient: 75
+                    patient: 75,
+                    visitDate: '11/29/2017'
                   },
                   routeName: 'map'
                 },
@@ -52,7 +58,8 @@
                   lastModified: '12/02/2017',
                   name: 'Medication List',
                   preamble: {
-                    patient: 76
+                    patient: 76,
+                    visitDate: '11/30/2017'
                   },
                   routeName: 'meds'
                 }

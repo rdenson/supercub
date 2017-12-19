@@ -7,6 +7,37 @@ function FormApi(svr) {
       formDocument = svr.get('FormDocument'),
       session = svr.get('session');
 
+  svr.get(API_BASE + '/:formId', function(request, response) {
+    var authDO = kq.defer(),
+        formId = request.params.formId,
+        token = request.headers.token || '';
+
+    //verify an active session; there are no roles or rights to verify yet
+    session.get(token, function(err, reply) {
+      if( reply == null ){
+        response.status(401).end();
+        authDO.reject();
+      } else{
+        authDO.resolve(JSON.parse(reply));
+      }
+    });
+
+    //if we're authorized...
+    authDO.promise.then(function(currentSession) {
+      formDocument.getForm(formId).then(
+        function(queryResult) {
+          response.json({ form: queryResult });
+        },
+        function(queryError) {
+          //try to explain the error we received
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/' + formId + ' failed');
+          console.log(queryError);
+          response.status(500).json();
+        }
+      );
+    });
+  });
+
   svr.get(API_BASE + '/query/list', function(request, response) {
     var authDO = kq.defer(),
         token = request.headers.token || '';
@@ -83,9 +114,63 @@ function FormApi(svr) {
         },
         function(createError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + saveError.message);
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + createError.message);
           console.log(formData);
-          response.status(500).json({ message: saveError.message });
+          response.status(500).json({ message: createError.message });
+        }
+      );
+    });
+  });
+
+  svr.put(API_BASE, function(request, response) {
+    var authDO = kq.defer(),
+        //marshal the post body into a patient model
+        formData = {
+          active: true,
+          assessment: request.body.assessment,
+          dates: {
+            modified: new Date
+          },
+          name: request.body.name,
+          objective: request.body.objective,
+          plan: request.body.plan,
+          preamble: JSON.parse(request.body.preamble),
+          routeName: request.body.routeName,
+          subjective: request.body.subjective,
+          suffix: JSON.parse(request.body.suffix)
+        },
+        formId = request.body._id,
+        token = request.headers.token || '';
+
+    //verify an active session; there are no roles or rights to verify yet
+    session.get(token, function(err, reply) {
+      if( reply == null ){
+        response.status(401).end();
+        authDO.reject();
+      } else{
+        authDO.resolve(JSON.parse(reply));
+      }
+    });
+
+    //if we're authorized...
+    authDO.promise.then(function(currentSession) {
+      formDocument.update(formId, formData).then(
+        function(id) {
+          //write an audit entry when we've saved our new facility, no need to wait for it to return
+          auditDocument.addEntry({
+            user: currentSession.id,
+            action: 'modified form',
+            document: id,
+            timestamp: new Date()
+          });
+          //return the id we just created
+          response.json({ formId: id });
+        },
+        function(updateError) {
+          //try to explain the error we received
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + updateError.message);
+          console.log(formData);
+          response.status(500).json({ message: updateError.message });
         }
       );
     });

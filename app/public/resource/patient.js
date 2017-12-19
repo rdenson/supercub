@@ -33,7 +33,9 @@
 
         $http.get(RESOURCE_BASE_PATH + '/' + patientId).then(
           function(resp) {
-            apiResponseDO.resolve(apiResponse.parse(resp));
+            var parsedResponse = apiResponse.parse(resp);
+
+            apiResponseDO.resolve(parsedResponse.patient);
           },
           function(err) {
             apiResponseDO.reject(apiResponse.parse(err));

@@ -21,6 +21,7 @@
       var serializeParam = $httpParamSerializerProvider.$get();
 
       $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+      $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
       $httpProvider.defaults.transformRequest = [
         function(data) {
           return angular.isObject(data) && String(data) !== '[object File]' ? serializeParam(data) : data;

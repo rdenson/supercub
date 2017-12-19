@@ -7,47 +7,68 @@
         'ngRoute'
       ]);
 
+  soapFormModule.value('contentObject', {
+    assessment: '',
+    name: 'SOAP Note',
+    objective: '',
+    plan: '',
+    preamble: {
+      facilityName: '',
+      patient: '',
+      patientName: '',
+      patientSsn: '',
+      visitDate: ''
+    },
+    routeName: 'soap',
+    subjective: '',
+    suffix: {
+      pharmacistName: '',
+      signatureDate: '',
+      timeSpent: ''
+    }
+  });
+
   soapFormModule.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/chart/:patientId/soap', {
-      controller: 'SoapFormController',
-      templateUrl: 'controller/form/soap.html',
-      resolve: {
-        patientResource: function($route, PatientResource) {
-          return PatientResource.get($route.current.params.patientId);
+    $routeProvider
+      .when('/chart/:patientId/soap', {
+        controller: 'NewSoapFormController',
+        templateUrl: 'controller/form/soap.html',
+        resolve: {
+          patient: function($route, PatientResource) {
+            return PatientResource.get($route.current.params.patientId);
+          }
         }
-      }
-    });
+      })
+      .when('/chart/:patientId/soap/:formId', {
+        controller: 'SoapFormController',
+        templateUrl: 'controller/form/soap.html',
+        resolve: {
+          formContent: function($route, FormResource) {
+            return FormResource.get($route.current.params.formId);
+          }
+        }
+      });
   }]);
 
-  soapFormModule.controller('SoapFormController', [
+  soapFormModule.controller('NewSoapFormController', [
     '$location',
     '$scope',
+    'contentObject',
     'FormResource',
-    'patientResource',
-    function($location, $scope, FormResource, patientResource) {
-      $scope.form = {
-        assessment: '',
-        name: 'SOAP Note',
-        objective: '',
-        plan: '',
-        preamble: {
-          facilityName: getFacility(patientResource.patient),
-          patient: patientResource.patient._id,
-          patientName: getPatientName(patientResource.patient),
-          patientSsn: patientResource.patient.identity.ssn,
-          visitDate: ''
-        },
-        routeName: 'soap',
-        subjective: '',
-        suffix: {
-          pharmacistName: '',
-          signatureDate: '',
-          timeSpent: ''
-        }
-      };
+    'patient',
+    function($location, $scope, contentObject, FormResource, patient) {
+      //seed the form; blank entries
+      $scope.form = angular.extend({}, contentObject);
 
+      //fill out form fields we know
+      $scope.form.preamble.facilityName = getFacility(patient);
+      $scope.form.preamble.patient = patient._id;
+      $scope.form.preamble.patientName = getPatientName(patient);
+      $scope.form.preamble.facilityName = patient.identity.ssn;
+
+      //navigation
       $scope.returnToChart = function() {
-        var patientChart = '/patient/chart/' + patientResource.patient._id;
+        var patientChart = '/patient/chart/' + patient._id;
 
         $location.path(patientChart);
       };
@@ -82,6 +103,39 @@
 
         return formattedName + ' (' + patientObject.identity.mrn + ')';
       }
+    }
+  ]);
+
+  soapFormModule.controller('SoapFormController', [
+    '$location',
+    '$scope',
+    'formContent',
+    'FormResource',
+    function($location, $scope, formContent, FormResource) {
+      //populate form directly from database
+      $scope.form = angular.extend({}, formContent);
+
+      //navigation
+      $scope.returnToChart = function() {
+        var patientChart = '/patient/chart/' + formContent.preamble.patient;
+
+        $location.path(patientChart);
+      };
+
+      $scope.saveForm = function() {
+        FormResource.update($scope.form).then(
+          function(resourceResult) {
+            if( !resourceResult.isError ){
+              $scope.returnToChart();
+            }
+
+          },
+          function(resourceError) {
+            $scope.form.hasFailure = resourceError.isError;
+            $scope.form.failureMessage = resourceError.apiMessage;
+          }
+        );
+      };
     }
   ]);
 })();
