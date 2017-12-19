@@ -87,6 +87,10 @@
         });
       };
 
+      $scope.editPatient = function(patientId) {
+        $location.path('/patient/' + patientId);
+      };
+
       $scope.viewChart = function(patientId) {
         $location.path('/patient/chart/' + patientId);
         //console.log('viewChart() called ' + new Date().getTime());

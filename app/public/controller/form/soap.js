@@ -7,7 +7,7 @@
         'ngRoute'
       ]);
 
-  soapFormModule.value('contentObject', {
+  soapFormModule.value('soapModel', {
     assessment: '',
     name: 'SOAP Note',
     objective: '',
@@ -53,12 +53,12 @@
   soapFormModule.controller('NewSoapFormController', [
     '$location',
     '$scope',
-    'contentObject',
     'FormResource',
     'patient',
-    function($location, $scope, contentObject, FormResource, patient) {
+    'soapModel',
+    function($location, $scope, FormResource, patient, soapModel) {
       //seed the form; blank entries
-      $scope.form = angular.extend({}, contentObject);
+      $scope.form = angular.extend({}, soapModel);
 
       //fill out form fields we know
       $scope.form.preamble.facilityName = getFacility(patient);

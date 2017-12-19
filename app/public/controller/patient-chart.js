@@ -36,6 +36,10 @@
 
       getAssociatedForms();
 
+      $scope.editPatient = function() {
+        $location.path('/patient/' + patient._id);
+      };
+
       $scope.returnToDashboard = function() {
         $location.path('/');
       };

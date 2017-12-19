@@ -60,7 +60,7 @@
         return apiResponseDO.promise;
       };
 
-      PatientResource.save = function(patientModel) {
+      PatientResource.create = function(patientModel) {
         var apiResponseDO = $q.defer(),
             payload = patientModel;
 
