@@ -157,19 +157,19 @@ function FormApi(svr) {
     authDO.promise.then(function(currentSession) {
       formDocument.update(formId, formData).then(
         function(id) {
-          //write an audit entry when we've saved our new facility, no need to wait for it to return
+          //write an audit entry when we've saved our facility, no need to wait for it to return
           auditDocument.addEntry({
             user: currentSession.id,
             action: 'modified form',
             document: id,
             timestamp: new Date()
           });
-          //return the id we just created
+          //return the id we just updated
           response.json({ formId: id });
         },
         function(updateError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + updateError.message);
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - PUT ' + API_BASE + ' failed, ' + updateError.message);
           console.log(formData);
           response.status(500).json({ message: updateError.message });
         }

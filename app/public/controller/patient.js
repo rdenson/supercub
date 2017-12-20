@@ -126,7 +126,8 @@
     'FacilityResource',
     'FormUtilitiesResource',
     'patient',
-    function($location, $scope, FacilityResource, FormUtilitiesResource, patient) {
+    'PatientResource',
+    function($location, $scope, FacilityResource, FormUtilitiesResource, patient, PatientResource) {
       $scope.form = {
         facilityList: [{ display: 'select...', value: '' }],
         failureMessage: '',
@@ -138,8 +139,11 @@
       $scope.newDrugAllergy = '';
       //populate form directly from database
       $scope.patient = angular.extend({}, patient);
+
       //a little massage for the facility ui
-      $scope.patient.facility = patient.facility._id;
+      if( angular.isDefined(patient.facility) ){
+        $scope.patient.facility = patient.facility._id;
+      }
 
       FacilityResource.list().then(function(resourceResult) {
         resourceResult.listing.forEach(function(facility) {
@@ -169,7 +173,7 @@
       }
 
       $scope.savePatient = function() {
-        /*PatientResource.update($scope.patient).then(
+        PatientResource.update($scope.patient).then(
           function(resourceResult) {
             if( !resourceResult.isError ){
               $location.path('/');
@@ -180,8 +184,7 @@
             $scope.form.hasFailure = resourceError.isError;
             $scope.form.failureMessage = resourceError.apiMessage;
           }
-        );*/
-        console.log($scope.patient);
+        );
       };
     }
   ]);

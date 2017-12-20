@@ -111,7 +111,7 @@ function PatientApi(svr) {
 
   /*
    * POST /v1/patient
-   * creates or save a patient
+   * creates a patient
    */
   svr.post(API_BASE, function(request, response) {
     var authDO = kq.defer(),
@@ -158,6 +158,57 @@ function PatientApi(svr) {
           console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + saveError.message);
           console.log(patientData);
           response.status(500).json({ message: saveError.message });
+        }
+      );
+    });
+  });
+
+  svr.put(API_BASE, function(request, response) {
+    var authDO = kq.defer(),
+        //marshal the post body into a patient model
+        patientData = {
+          active: true,
+          dates: {
+            modified: new Date
+          },
+          demographics: JSON.parse(request.body.demographics),
+          facility: request.body.facility,
+          generalInfo: JSON.parse(request.body.generalInfo),
+          identity: JSON.parse(request.body.identity),
+          notes: request.body.notes
+        },
+        patientId = request.body._id,
+        token = request.headers.token || '';
+
+    //verify an active session; there are no roles or rights to verify yet
+    session.get(token, function(err, reply) {
+      if( reply == null ){
+        response.status(401).end();
+        authDO.reject();
+      } else{
+        authDO.resolve(JSON.parse(reply));
+      }
+    });
+
+    //if we're authorized...
+    authDO.promise.then(function(currentSession) {
+      patientDocument.update(patientId, patientData).then(
+        function(id) {
+          //write an audit entry when we've saved our facility, no need to wait for it to return
+          auditDocument.addEntry({
+            user: currentSession.id,
+            action: 'modified patient',
+            document: id,
+            timestamp: new Date()
+          });
+          //return the id we just updated
+          response.json({ patientId: id });
+        },
+        function(updateError) {
+          //try to explain the error we received
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - PUT ' + API_BASE + ' failed, ' + updateError.message);
+          console.log(patientData);
+          response.status(500).json({ message: updateError.message });
         }
       );
     });

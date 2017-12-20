@@ -13,6 +13,22 @@
       var RESOURCE_BASE_PATH = '/v1/patient',
           PatientResource = {};
 
+      PatientResource.create = function(patientModel) {
+        var apiResponseDO = $q.defer(),
+            payload = patientModel;
+
+        $http.post(RESOURCE_BASE_PATH, payload).then(
+          function(resp) {
+            apiResponseDO.resolve(apiResponse.parse(resp));
+          },
+          function(err) {
+            apiResponseDO.reject(apiResponse.parse(err));
+          }
+        );
+
+        return apiResponseDO.promise;
+      };
+
       PatientResource.delete = function(patientId) {
         var apiResponseDO = $q.defer();
 
@@ -60,11 +76,11 @@
         return apiResponseDO.promise;
       };
 
-      PatientResource.create = function(patientModel) {
+      PatientResource.update = function(patientModel) {
         var apiResponseDO = $q.defer(),
             payload = patientModel;
 
-        $http.post(RESOURCE_BASE_PATH, payload).then(
+        $http.put(RESOURCE_BASE_PATH, payload).then(
           function(resp) {
             apiResponseDO.resolve(apiResponse.parse(resp));
           },

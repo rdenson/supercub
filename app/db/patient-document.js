@@ -1,4 +1,5 @@
-var kq = require('q');
+var extend = require('extend'),
+    kq = require('q');
 
 
 function PatientDocument(serverObject) {
@@ -71,12 +72,6 @@ function PatientDocument(serverObject) {
           }
         },
 
-        /*
-         * save api
-         * maybe this should be two functions...
-         *  create
-         *  update
-         */
         save: function(modelObject, isNewPatient) {
           var checkExistingQuery = {
                 'identity.ssn': modelObject.identity.ssn
@@ -114,6 +109,28 @@ function PatientDocument(serverObject) {
           }
 
           return saveDO.promise;
+        },
+
+        update: function(id, modelObject) {
+          var updateDO = kq.defer();
+
+          patientModel.findById(id, function(err, doc) {
+            var existingDoc = extend(true, doc, modelObject);
+            var document = new patientModel(existingDoc);
+
+            document.save(function(err, savedDoc) {
+              if( err != null ){
+                updateDO.reject({
+                  message: 'patient could not be saved',
+                  rawError: err
+                });
+              }
+
+              updateDO.resolve(savedDoc._id);
+            });
+          });
+
+          return updateDO.promise;
         }
       };
 
