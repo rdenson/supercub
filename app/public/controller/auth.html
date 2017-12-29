@@ -1,18 +1,22 @@
-<div class="card" style="margin-right: 300px; margin-left: 300px; margin-top: 100px; padding: 10px;">
-  <div class="card-body">
-      <h4 class="card-title text-center">Welcome</h4>
+<div class="row justify-content-center justify-content-md-center mt-5">
+  <div class="col-9 col-md-6 col-xl-4">
+    <div class="card">
+      <div class="card-body">
+          <h4 class="card-title text-center">Welcome</h4>
 
-      <!-- login -->
-      <form>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="user id" ng-model="form.user">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" placeholder="password" ng-model="form.pass">
-          <small id="loginHelp" class="form-text text-danger" ng-show="form.hasFailure">{{ form.failureMessage }}</small>
-        </div>
-        <button type="button" class="btn btn-primary btn-block" ng-click="login()" ng-disabled="!form.user.length || !form.pass.length">Sign In</button>
-      </form>
+          <!-- login -->
+          <form>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="user id" ng-model="form.user">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="password" ng-model="form.pass">
+              <small id="loginHelp" class="form-text text-danger" ng-show="form.hasFailure">{{ form.failureMessage }}</small>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" ng-click="login()" ng-disabled="!form.user.length || !form.pass.length">Sign In</button>
+          </form>
 
+      </div>
+    </div>
   </div>
 </div>

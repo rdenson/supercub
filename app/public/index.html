@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="ConSo" ng-controller="MainController">
   <head>
-    <title>SuperCub Project</title>
+    <title>con-so</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <!-- %%% bootstrap 4 %%% -->
@@ -14,6 +15,40 @@
     <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
   </head>
   <body style="background-color: #f7f7f7;">
+    <!-- global control -->
+    <div class="d-flex flex-column" style="background-color: #859EAF; color: #fff;">
+      <div class="d-flex justify-content-between">
+        <div class="navbar">
+          <a class="nav-link" style="color: #fff;" ng-click="goHome()">
+            Con-So
+            <img src="assets/mascot.png" style="height: 32px; width: 42px;">
+          </a>
+        </div>
+        <div class="navbar" ng-show="user.verified">
+          <span style="padding-right: 10px;">
+            <img src="assets/open-iconic/svg/person.svg" alt="user" class="std-icon">
+            {{user.session.userid}}
+          </span>
+          <a class="btn btn-sm btn-link" style="color: #fff; cursor: pointer;" ng-click="logout()">
+            <img src="assets/open-iconic/svg/account-logout.svg" alt="logout" class="std-icon">
+            logout
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" ng-view=""></div>
+
+    <!-- footer -->
+    <div class="d-flex flex-column app-footer">
+      <div class="d-flex justify-content-center">
+        <p class="text-muted text-center"><small>
+          designed and built by Denson Ventures; icons from Open Iconic<br>
+          ver.{{ appVersion }}
+        </small></p>
+      </div>
+    </div>
+
     <script src="index.js"></script>
     <!-- controller -->
     <script src="controller/auth.js"></script>
@@ -32,41 +67,5 @@
     <script src="resource/form-utilities.js"></script>
     <script src="resource/patient.js"></script>
     <script src="resource/user.js"></script>
-
-    <!-- global control -->
-    <div class="d-flex flex-column" style="background-color: #859EAF; color: #fff;">
-      <div class="d-flex justify-content-between">
-        <div class="navbar">
-          <a class="nav-link" style="color: #fff;" ng-click="goHome()">
-            Con-So
-            <img src="assets/mascot.png" style="height: 32px; width: 42px;">
-          </a>
-        </div>
-        <div class="navbar" ng-show="user.verified">
-          <span style="padding-right: 10px;">
-            <img src="assets/open-iconic/svg/person.svg" alt="user" class="std-icon">
-            {{user.session.userid}}
-          </span>
-          <a class="btn btn-sm btn-link" style="color: #fff; cursor: pointer;" ng-click="logout()">
-            <img src="assets/open-iconic/svg/account-logout.svg" alt="logout" class="std-icon">
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-left: auto; margin-right: auto; width: 1000px;">
-      <!-- page/location content -->
-      <div ng-view=""></div>
-
-      <!-- footer -->
-      <div class="app-footer">
-        <div class="d-flex justify-content-center">
-          <p class="text-muted text-center"><small>
-            designed and built by Denson Ventures; icons from Open Iconic<br>
-            ver.{{ appVersion }}
-          </small></p>
-        </div>
-      </div>
-    </div>
   </body>
 </html>

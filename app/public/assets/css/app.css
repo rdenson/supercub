@@ -12,6 +12,7 @@
   padding-top: 5px;
   border-top: 1px solid #CFCFCF;
 }
+/* deprecated */
 .first-row-space {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -28,6 +29,7 @@
   font-weight: 300;
   line-height: 1.2;
 }
+/* deprecated */
 .row-space-bottom {
   margin-bottom: 10px;
 }
