@@ -1,40 +1,33 @@
-<div class="row first-row-space">
+<div class="row justify-content-center justify-content-md-center mt-2 mb-1">
   <!-- action toolbar -->
-  <div class="col">
+  <div class="col-12 col-md-12 col-xl-10">
     <div class="btn-toolbar">
       <div class="btn-group btn-group-sm">
-        <button type="button" class="btn btn-link" ng-click="returnToChart()">
-          <img src="assets/open-iconic/svg/arrow-left.svg" alt="delete" class="std-icon"> Return to Patient's Chart
-        </button>
-
+        <button type="button" class="btn btn-secondary" ng-click="returnToChart()">Return to Patient's Chart</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row row-space-bottom">
-  <div class="col">
+<div class="row justify-content-center justify-content-md-center mb-3">
+  <div class="col-12 col-md-12 col-xl-10">
     <div class="card">
       <div class="card-body">
 
         <div class="form-row">
-          <div class="col-md-3">
+          <div class="col-12 col-md-4">
             <label for="facilityName">Facility Name</label>
             <input id="facilityName" type="text" class="form-control form-control-sm" ng-model="form.preamble.facilityName" readonly>
           </div>
-          <div class="col-md-2">
+          <div class="col-12 col-md-4 col-xl-2">
             <label for="visitDate">Date of Visit</label>
             <input id="visitDate" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="form.preamble.visitDate">
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md-8">
+          <div class="col-12 col-md-8 col-xl-6">
             <label for="patientName">Patient</label>
             <input id="patientName" type="text" class="form-control form-control-sm" ng-model="form.preamble.patientName" readonly>
-          </div>
-          <div class="col-md-4">
-            <label for="patientName">SSN</label>
-            <input id="patientName" type="text" class="form-control form-control-sm" ng-model="form.preamble.patientSsn" readonly>
           </div>
         </div>
 
@@ -43,31 +36,31 @@
   </div>
 </div>
 
-<div class="row row-space-bottom">
-  <div class="col">
+<div class="row justify-content-center justify-content-md-center mb-3">
+  <div class="col-12 col-md-12 col-xl-10">
     <div class="card">
       <div class="card-body">
 
         <div class="form-row">
-          <div class="col-md">
+          <div class="col-12">
             <label for="subjective">Subjective</label>
             <textarea id="subjective" class="form-control" rows="7" ng-model="form.subjective"></textarea>
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md">
+          <div class="col-12">
             <label for="objective">Objective</label>
             <textarea id="objective" class="form-control" rows="7" ng-model="form.objective"></textarea>
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md">
+          <div class="col-12">
             <label for="assessment">Assessment</label>
             <textarea id="assessment" class="form-control" rows="7" ng-model="form.assessment"></textarea>
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md">
+          <div class="col-12">
             <label for="plan">Plan</label>
             <textarea id="plan" class="form-control" rows="7" ng-model="form.plan"></textarea>
           </div>
@@ -78,21 +71,21 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
+<div class="row justify-content-center justify-content-md-center">
+  <div class="col-12 col-md-12 col-xl-10">
     <div class="card">
       <div class="card-body">
 
         <div class="form-row" style="margin-bottom: 10px;">
-          <div class="col-md-8">
+          <div class="col-12 col-md-8">
             <label for="">Pharmacist</label>
             <input id="pharmacistName" type="text" class="form-control form-control-sm" ng-model="form.suffix.pharmacistName">
           </div>
-          <div class="col-md-2">
+          <div class="col-6 col-md-2">
             <label for="timeSpent">Time Spent</label>
             <input id="timeSpent" type="text" class="form-control form-control-sm" placeholder="ex: 45 minutes" ng-model="form.suffix.timeSpent">
           </div>
-          <div class="col-md-2">
+          <div class="col-6 col-md-2">
             <label for="signatureDate">Date</label>
             <input id="signatureDate" type="text" class="form-control form-control-sm" placeholder="dd/mm/yyyy" ng-model="form.suffix.signatureDate">
           </div>

@@ -64,7 +64,6 @@
       $scope.form.preamble.facilityName = getFacility(patient);
       $scope.form.preamble.patient = patient._id;
       $scope.form.preamble.patientName = getPatientName(patient);
-      $scope.form.preamble.facilityName = patient.identity.ssn;
 
       //navigation
       $scope.returnToChart = function() {

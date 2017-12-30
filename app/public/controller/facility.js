@@ -46,6 +46,10 @@
         stateList: FormUtilitiesResource.getStates()
       };
 
+      $scope.returnToDashboard = function() {
+        $location.path('/');
+      }
+
       $scope.createFacility = function() {
         FacilityResource.create($scope.facility).then(
           function(resourceResult) {

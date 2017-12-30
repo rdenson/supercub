@@ -1,93 +1,107 @@
-<h3><span class="border-top-0 rounded-bottom page-title-tab">{{ facilityDisplay }}</span></h3>
-<div class="row row-space-bottom">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-body">
-
-        <div class="form-row">
-          <div class="col-md-6">
-            <label for="facilityName">Facility Name</label>
-            <input id="facilityName" type="text" class="form-control form-control-sm" ng-model="facility.name">
-          </div>
-          <div class="col-md-4">
-            <label for="facilityType">Type</label>
-            <select id="facilityType" class="form-control form-control-sm" ng-model="facility.type">
-              <option ng-repeat="facilityType in form.facilityTypeList">{{ facilityType }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-6">
-            <label for="facilityAddress">Address</label>
-            <input id="facilityAddress" type="text" class="form-control form-control-sm" ng-model="facility.address">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-3">
-            <label for="facilityCity">City</label>
-            <input id="facilityCity" type="text" class="form-control form-control-sm" ng-model="facility.city">
-          </div>
-          <div class="col-md-3">
-            <label for="facilityState">State</label>
-            <select id="facilityState" class="form-control form-control-sm" ng-model="facility.state">
-              <option ng-repeat="state in form.stateList">{{ state }}</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label for="facilityZip">Zip Code</label>
-            <input id="facilityZip" type="text" class="form-control form-control-sm" ng-model="facility.zipcode">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md">
-            <label for="facillityNotes">Notes</label>
-            <textarea id="facillityNotes" class="form-control" rows="7" ng-model="facility.notes"></textarea>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">Contact Information</h5>
-        <div class="form-row">
-          <div class="col-md-6">
-            <label for="facilityPhone">Main Number</label>
-            <input id="facilityPhone" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.phone">
-          </div>
-          <div class="col-md-6">
-            <label for="facilityFax">Fax</label>
-            <input id="facilityFax" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.fax">
-          </div>
-        </div>
-        <div class="form-row card-divider">
-          <div class="col-md-8">
-            <label for="facilityContact">Contact Person</label>
-            <input id="facilityContact" type="text" class="form-control form-control-sm" placeholder="Name" ng-model="facility.contact.person.name">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-6">
-            <label for="facilityContact">Phone</label>
-            <input id="facilityContactPhone" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.person.phone">
-          </div>
-          <div class="col-md-3">
-            <label for="facilityContactExtension">Ext.</label>
-            <input id="facilityContactExtension" type="text" class="form-control form-control-sm" placeholder="1234" ng-model="facility.contact.person.extension">
-          </div>
-        </div>
-
+<div class="row justify-content-center justify-content-md-center mt-2 mb-1">
+  <!-- action toolbar -->
+  <div class="col-12 col-md-12 col-xl-10">
+    <div class="btn-toolbar">
+      <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-secondary" ng-click="returnToDashboard()">Back to Dashboard</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md">
+<div class="row justify-content-center justify-content-md-center mb-3">
+  <div class="col-12 col-md-12 col-xl-10">
+    <div class="row justify-content-start justify-content-md-start">
+      <div class="col-12 col-md-12 col-xl-8">
+        <div class="card">
+          <div class="card-body">
+
+            <div class="form-row">
+              <div class="col-12 col-md-6">
+                <label for="facilityName">Facility Name</label>
+                <input id="facilityName" type="text" class="form-control form-control-sm" ng-model="facility.name">
+              </div>
+              <div class="col-12 col-md-4">
+                <label for="facilityType">Type</label>
+                <select id="facilityType" class="form-control form-control-sm" ng-model="facility.type">
+                  <option ng-repeat="facilityType in form.facilityTypeList">{{ facilityType }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-12">
+                <label for="facilityAddress">Address</label>
+                <input id="facilityAddress" type="text" class="form-control form-control-sm" ng-model="facility.address">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-12 col-md-6">
+                <label for="facilityCity">City</label>
+                <input id="facilityCity" type="text" class="form-control form-control-sm" ng-model="facility.city">
+              </div>
+              <div class="col-8 col-md-4">
+                <label for="facilityState">State</label>
+                <select id="facilityState" class="form-control form-control-sm" ng-model="facility.state">
+                  <option ng-repeat="state in form.stateList">{{ state }}</option>
+                </select>
+              </div>
+              <div class="col-4 col-md-2">
+                <label for="facilityZip">Zip Code</label>
+                <input id="facilityZip" type="text" class="form-control form-control-sm" ng-model="facility.zipcode">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-12">
+                <label for="facillityNotes">Notes</label>
+                <textarea id="facillityNotes" class="form-control" rows="7" ng-model="facility.notes"></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-12 col-xl-4">
+        <div class="card">
+          <div class="card-body">
+
+            <h5 class="card-title">Contact Information</h5>
+            <div class="form-row">
+              <div class="col-6">
+                <label for="facilityPhone">Main Number</label>
+                <input id="facilityPhone" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.phone">
+              </div>
+              <div class="col-6">
+                <label for="facilityFax">Fax</label>
+                <input id="facilityFax" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.fax">
+              </div>
+            </div>
+            <div class="form-row card-divider">
+              <div class="col-12">
+                <label for="facilityContact">Contact Person</label>
+                <input id="facilityContact" type="text" class="form-control form-control-sm" placeholder="Name" ng-model="facility.contact.person.name">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-6">
+                <label for="facilityContact">Phone</label>
+                <input id="facilityContactPhone" type="text" class="form-control form-control-sm" placeholder="555-555-5555" ng-model="facility.contact.person.phone">
+              </div>
+              <div class="col-3">
+                <label for="facilityContactExtension">Ext.</label>
+                <input id="facilityContactExtension" type="text" class="form-control form-control-sm" placeholder="1234" ng-model="facility.contact.person.extension">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center justify-content-md-center">
+  <div class="col-12 col-md-12 col-xl-10">
     <div class="card">
       <div class="card-body">
         <!-- user alert / form validation needs work -->
