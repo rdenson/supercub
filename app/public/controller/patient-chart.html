@@ -1,6 +1,6 @@
 <div class="row justify-content-center justify-content-md-center">
   <div class="col-12 col-md-12 col-xl-10">
-    <h1 class="patient-chart-title">
+    <h1 class="page-title">
       {{ patient.name }} ({{ patient.mrn }})
     </h1>
   </div>
@@ -17,13 +17,10 @@
           New Chart Document
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-          <a class="dropdown-item" href="#">Medication Action Plan</a>
+          <a class="dropdown-item" href="#!/chart/{{ patient.id }}/map">Medication Action Plan</a>
           <a class="dropdown-item" href="#">Medication List</a>
           <a class="dropdown-item" href="#!/chart/{{ patient.id }}/soap">SOAP Note</a>
         </div>
-      </div>
-      <div class="btn-group btn-group-sm">
-        <button type="button" class="btn btn-sm btn-danger float-right">delete patient</button>
       </div>
     </div>
   </div>
@@ -50,13 +47,23 @@
   </div>
 </div>
 
-<div class="row justify-content-center justify-content-md-center">
+<div class="row justify-content-center justify-content-md-center mb-3">
   <div class="col-12 col-md-12 col-xl-10">
     <div class="card">
       <div class="card-body">
 
         <h5 class="card-title">History</h5>
         blah, blah
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center justify-content-md-center">
+  <div class="col-12 col-md-12 col-xl-10">
+    <div class="card">
+      <div class="card-body">
+        <button type="button" class="btn btn-sm btn-outline-danger btn-sm btn-block">delete patient</button>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@
   </div>
 </div>
 
+
 <div class="row justify-content-center justify-content-md-center mt-2 mb-1">
   <!-- action toolbar -->
   <div class="col-12 col-md-12 col-xl-10">
@@ -43,35 +44,29 @@
 </div>
 
 <div class="row justify-content-center justify-content-md-center mb-3">
-  <div class="col-12 col-md-12 col-xl-10">
+  <div class="col-12 col-md-12 col-xl-10 table-responsive-sm">
     <div class="card">
       <div class="card-body">
-
-        <div class="form-row">
-          <div class="col-12">
-            <label for="subjective">Subjective</label>
-            <textarea id="subjective" class="form-control" rows="7" ng-model="form.subjective"></textarea>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-12">
-            <label for="objective">Objective</label>
-            <textarea id="objective" class="form-control" rows="7" ng-model="form.objective"></textarea>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-12">
-            <label for="assessment">Assessment</label>
-            <textarea id="assessment" class="form-control" rows="7" ng-model="form.assessment"></textarea>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-12">
-            <label for="plan">Plan</label>
-            <textarea id="plan" class="form-control" rows="7" ng-model="form.plan"></textarea>
-          </div>
-        </div>
-
+        <table class="table table-sm table-hover" style="margin-top: 10px;">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Concern</th>
+              <th scope="col">Action Steps</th>
+              <th scope="col">Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in form.planItems">
+              <td scope="row">{{ $index + 1 }}</td>
+              <td><textarea id="concern{{ $index }}" class="form-control" rows="3" ng-model="item.concern"></textarea></td>
+              <td><textarea id="steps{{ $index }}" class="form-control" rows="3" ng-model="item.steps"></textarea></td>
+              <td><textarea id="result{{ $index }}" class="form-control" rows="3" ng-model="item.result"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-success btn-sm btn-block" ng-click="startAnotherRow()">Add a Concern</button>
+        <button type="button" class="btn btn-outline-danger btn-sm btn-block" ng-show="canRemovePlanItems" ng-click="removeLastRow()">Remove Last Concern</button>
       </div>
     </div>
   </div>

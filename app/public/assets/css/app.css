@@ -12,26 +12,17 @@
   padding-top: 5px;
   border-top: 1px solid #CFCFCF;
 }
-/* deprecated */
-.first-row-space {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 .form-surround {
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.page-title-tab {
-  padding: 0 15px 0 15px;
-  border: 2px solid #859EAF;
-}
-.patient-chart-title {
+.page-title {
   font-weight: 300;
   line-height: 1.2;
 }
-/* deprecated */
-.row-space-bottom {
-  margin-bottom: 10px;
+.page-title-tab {
+  padding: 0 15px 0 15px;
+  border: 2px solid #859EAF;
 }
 .sm-icon {
   height: 10px;
