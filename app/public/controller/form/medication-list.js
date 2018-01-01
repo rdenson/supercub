@@ -8,7 +8,9 @@
       ]);
 
   medFormModule.value('medModel', {
-    content: {},
+    content: {
+      medications: []
+    },
     name: 'Medication List',
     preamble: {
       facilityName: '',
@@ -40,7 +42,7 @@
         templateUrl: 'controller/form/medication-list.html',
         resolve: {
           formContent: function($route, FormResource) {
-            return FormResource.get('map', $route.current.params.formId);
+            return FormResource.get('med', $route.current.params.formId);
           }
         }
       });
@@ -56,16 +58,62 @@
       //seed the form; blank entries
       $scope.form = angular.extend({}, medModel);
 
+      //fill out form fields we know
+      $scope.form.preamble.facilityName = getFacility(patient);
+      $scope.form.preamble.patient = patient._id;
+      $scope.form.preamble.patientName = getPatientName(patient);
+      //initialize a plan items to empty array (extend does not reset the array)
+      $scope.form.content.medications = [];
+      $scope.canRemoveMedications = false;
+
       //navigation
       $scope.returnToChart = function() {
         var patientChart = '/patient/chart/' + patient._id;
 
         $location.path(patientChart);
       };
+
+      $scope.startAnotherRow = function() {
+        var emptyMedicationRow = {
+              usage: '',
+              name: '',
+              form: '',
+              dosage: '',
+              directions: '',
+              startdate: '',
+              enddate: '',
+              notes: ''
+            };
+
+        $scope.form.content.medications.push(angular.extend({}, emptyMedicationRow));
+        $scope.canRemoveMedications = $scope.form.content.medications.length > 1;
+      };
+      $scope.startAnotherRow();
+
+      $scope.removeLastRow = function() {
+        $scope.form.content.medications.pop();
+        $scope.canRemoveMedications = $scope.form.content.medications.length > 1;
+      };
+
+      function getFacility(patientObject) {
+        if( angular.isDefined(patientObject.facility) ){
+          return patientObject.facility.name;
+        } else {
+          return 'no associated facility';
+        }
+      }
+
+      function getPatientName(patientObject) {
+        var formattedName = patientObject.generalInfo.lastname + ' '
+              + patientObject.generalInfo.middlename + ', '
+              + patientObject.generalInfo.firstname;
+
+        return formattedName + ' (' + patientObject.identity.mrn + ')';
+      }
     }
   ]);
 
-  medFormModule.controller('MapFormController', [
+  medFormModule.controller('MedFormController', [
     '$location',
     '$scope',
     'formContent',

@@ -44,8 +44,41 @@
 </div>
 
 <div class="row justify-content-center justify-content-md-center mb-3">
-  <div class="col-12 col-md-12 col-xl-10">
-    form content!
+  <div class="col-12 col-md-12 col-xl-10 table-responsive-sm">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-sm" style="margin-top: 10px;">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Usage</th>
+              <th scope="col">Medication</th>
+              <th scope="col">Form/Route</th>
+              <th scope="col">Dosage</th>
+              <th scope="col">Directions</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Notes/Special Instructions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="medication in form.content.medications">
+              <td scope="row">{{ $index + 1 }}</td>
+              <td><textarea id="usage{{ $index }}" class="form-control" rows="2" ng-model="medication.usage"></textarea></td>
+              <td><textarea id="name{{ $index }}" class="form-control" rows="2" ng-model="medication.name"></textarea></td>
+              <td><textarea id="form{{ $index }}" class="form-control" rows="2" ng-model="medication.form"></textarea></td>
+              <td><textarea id="dosage{{ $index }}" class="form-control" rows="2" ng-model="medication.dosage"></textarea></td>
+              <td><textarea id="directions{{ $index }}" class="form-control" rows="2" ng-model="medication.directions"></textarea></td>
+              <td><textarea id="startdate{{ $index }}" class="form-control" rows="2" ng-model="medication.startdate"></textarea></td>
+              <td><textarea id="enddate{{ $index }}" class="form-control" rows="2" ng-model="medication.enddate"></textarea></td>
+              <td><textarea id="notes{{ $index }}" class="form-control" rows="2" ng-model="medication.notes"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-success btn-sm btn-block" ng-click="startAnotherRow()">Add a Medication</button>
+        <button type="button" class="btn btn-outline-danger btn-sm btn-block" ng-show="canRemoveMedications" ng-click="removeLastRow()">Remove Last Medication</button>
+      </div>
+    </div>
   </div>
 </div>
 

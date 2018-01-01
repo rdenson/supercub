@@ -57,13 +57,11 @@
     function($location, $scope, FormResource, patient, mapModel) {
       //seed the form; blank entries
       $scope.form = angular.extend({}, mapModel);
-      console.log(mapModel);
 
       //fill out form fields we know
       $scope.form.preamble.facilityName = getFacility(patient);
       $scope.form.preamble.patient = patient._id;
       $scope.form.preamble.patientName = getPatientName(patient);
-
       //initialize a plan items to empty array (extend does not reset the array)
       $scope.form.content.planItems = [];
       $scope.canRemovePlanItems = false;
@@ -153,13 +151,13 @@
 
       $scope.saveForm = function() {
         var formCopy = angular.extend({}, $scope.form),
-            scrubbedPlanItems = angular.copy($scope.form.planItems);
+            scrubbedPlanItems = angular.copy($scope.form.content.planItems);
 
         //get rid of angular's key/value pair generated from the ng-repeat
         scrubbedPlanItems.forEach(function(v, k) {
           delete v['$$hashKey'];
         });
-        formCopy.planItems = scrubbedPlanItems;
+        formCopy.content.planItems = scrubbedPlanItems;
 
         FormResource.update(formCopy).then(
           function(resourceResult) {
