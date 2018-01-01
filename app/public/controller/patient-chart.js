@@ -44,31 +44,9 @@
         $location.path('/');
       };
 
+      //probably should move this logic to the form resource
       function getAssociatedForms() {
         FormResource.listForms(patient._id).then(function(resourceResult) {
-          var temporaryFiller = [
-                {
-                  _id: 101,
-                  lastModified: '12/02/2017',
-                  name: 'Medication Action Plan',
-                  preamble: {
-                    patient: 75,
-                    visitDate: '11/29/2017'
-                  },
-                  routeName: 'map'
-                },
-                {
-                  _id: 102,
-                  lastModified: '12/02/2017',
-                  name: 'Medication List',
-                  preamble: {
-                    patient: 76,
-                    visitDate: '11/30/2017'
-                  },
-                  routeName: 'meds'
-                }
-              ];
-
           //dates from mongo come back in UTC...
           resourceResult.listing.forEach(function(form) {
             var parsedDate = new Date(form.dates.modified.replace('T', ' ').replace('Z', '') + ' UTC');
@@ -77,8 +55,7 @@
             form.lastModified = (parsedDate.getMonth() + 1) + '/' + parsedDate.getDate() + '/' + parsedDate.getFullYear()
           });
 
-          //concatenating the temporaryFiller should go away soon
-          $scope.formCollection = temporaryFiller.concat(resourceResult.listing);
+          $scope.formCollection = resourceResult.listing;
         });
       }
     }

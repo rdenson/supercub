@@ -29,10 +29,10 @@
         return apiResponseDO.promise;
       };
 
-      FormResource.get = function(formId) {
+      FormResource.get = function(formAbbr, formId) {
         var apiResponseDO = $q.defer();
 
-        $http.get(RESOURCE_BASE_PATH + '/' + formId).then(
+        $http.get(RESOURCE_BASE_PATH + '/' + formAbbr + '/' + formId).then(
           function(resp) {
             var parsedResponse = apiResponse.parse(resp);
 
@@ -49,7 +49,7 @@
       FormResource.listForms = function(patientId) {
         var apiResponseDO = $q.defer();
 
-        $http.get(RESOURCE_BASE_PATH + '/query/list?patientId=' + patientId).then(
+        $http.get(RESOURCE_BASE_PATH + '/list?patientId=' + patientId).then(
           function(resp) {
             apiResponseDO.resolve(apiResponse.parse(resp));
           },

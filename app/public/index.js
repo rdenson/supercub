@@ -5,6 +5,7 @@
         'controller.auth',
         'controller.dashboard',
         'controller.form-medication-action-plan',
+        'controller.form-medication-list',
         'controller.form-soap',
         'controller.facility',
         'controller.patient',

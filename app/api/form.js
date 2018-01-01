@@ -7,8 +7,9 @@ function FormApi(svr) {
       formDocument = svr.get('FormDocument'),
       session = svr.get('session');
 
-  svr.get(API_BASE + '/:formId', function(request, response) {
+  svr.get(API_BASE + '/:formAbbr/:formId', function(request, response) {
     var authDO = kq.defer(),
+        formAbbr = request.params.formAbbr,
         formId = request.params.formId,
         token = request.headers.token || '';
 
@@ -24,13 +25,13 @@ function FormApi(svr) {
 
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
-      formDocument.getForm(formId).then(
+      formDocument.getForm(formAbbr, formId).then(
         function(queryResult) {
           response.json({ form: queryResult });
         },
         function(queryError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/' + formId + ' failed');
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/name/' + formAbbr + '/' + formId + ' failed');
           console.log(queryError);
           response.status(500).json();
         }
@@ -38,7 +39,7 @@ function FormApi(svr) {
     });
   });
 
-  svr.get(API_BASE + '/query/list', function(request, response) {
+  svr.get(API_BASE + '/list', function(request, response) {
     var authDO = kq.defer(),
         patientId = request.query.patientId,
         token = request.headers.token || '';
@@ -74,17 +75,14 @@ function FormApi(svr) {
         //marshal the post body into a patient model
         formData = {
           active: true,
-          assessment: request.body.assessment,
+          content: JSON.parse(request.body.content),
           dates: {
             created: new Date(),
             modified: new Date
           },
           name: request.body.name,
-          objective: request.body.objective,
-          plan: request.body.plan,
           preamble: JSON.parse(request.body.preamble),
           routeName: request.body.routeName,
-          subjective: request.body.subjective,
           suffix: JSON.parse(request.body.suffix)
         },
         token = request.headers.token || '';
@@ -128,16 +126,13 @@ function FormApi(svr) {
         //marshal the post body into a patient model
         formData = {
           active: true,
-          assessment: request.body.assessment,
+          content: JSON.parse(request.body.content),
           dates: {
             modified: new Date
           },
           name: request.body.name,
-          objective: request.body.objective,
-          plan: request.body.plan,
           preamble: JSON.parse(request.body.preamble),
           routeName: request.body.routeName,
-          subjective: request.body.subjective,
           suffix: JSON.parse(request.body.suffix)
         },
         formId = request.body._id,

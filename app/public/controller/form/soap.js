@@ -8,10 +8,13 @@
       ]);
 
   soapFormModule.value('soapModel', {
-    assessment: '',
+    content: {
+      assessment: '',
+      objective: '',
+      plan: '',
+      subjective: ''
+    },
     name: 'SOAP Note',
-    objective: '',
-    plan: '',
     preamble: {
       facilityName: '',
       patient: '',
@@ -20,7 +23,6 @@
       visitDate: ''
     },
     routeName: 'soap',
-    subjective: '',
     suffix: {
       pharmacistName: '',
       signatureDate: '',
@@ -44,7 +46,7 @@
         templateUrl: 'controller/form/soap.html',
         resolve: {
           formContent: function($route, FormResource) {
-            return FormResource.get($route.current.params.formId);
+            return FormResource.get('soap', $route.current.params.formId);
           }
         }
       });
@@ -64,6 +66,11 @@
       $scope.form.preamble.facilityName = getFacility(patient);
       $scope.form.preamble.patient = patient._id;
       $scope.form.preamble.patientName = getPatientName(patient);
+      //reset the content
+      $scope.form.content.assessment = '';
+      $scope.form.content.objective = '';
+      $scope.form.content.plan = '';
+      $scope.form.content.subjective = '';
 
       //navigation
       $scope.returnToChart = function() {
