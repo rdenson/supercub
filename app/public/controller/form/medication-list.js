@@ -53,7 +53,7 @@
     '$scope',
     'FormResource',
     'patient',
-    'mapModel',
+    'medModel',
     function($location, $scope, FormResource, patient, medModel) {
       //seed the form; blank entries
       $scope.form = angular.extend({}, medModel);
@@ -95,6 +95,21 @@
         $scope.canRemoveMedications = $scope.form.content.medications.length > 1;
       };
 
+      $scope.saveForm = function() {
+        FormResource.create($scope.form).then(
+          function(resourceResult) {
+            if( !resourceResult.isError ){
+              $scope.returnToChart();
+            }
+
+          },
+          function(resourceError) {
+            $scope.form.hasFailure = resourceError.isError;
+            $scope.form.failureMessage = resourceError.apiMessage;
+          }
+        );
+      };
+
       function getFacility(patientObject) {
         if( angular.isDefined(patientObject.facility) ){
           return patientObject.facility.name;
@@ -127,6 +142,42 @@
         var patientChart = '/patient/chart/' + formContent.preamble.patient;
 
         $location.path(patientChart);
+      };
+
+      $scope.startAnotherRow = function() {
+        var emptyMedicationRow = {
+              usage: '',
+              name: '',
+              form: '',
+              dosage: '',
+              directions: '',
+              startdate: '',
+              enddate: '',
+              notes: ''
+            };
+
+        $scope.form.content.medications.push(angular.extend({}, emptyMedicationRow));
+        $scope.canRemoveMedications = $scope.form.content.medications.length > 1;
+      };
+
+      $scope.removeLastRow = function() {
+        $scope.form.content.medications.pop();
+        $scope.canRemoveMedications = $scope.form.content.medications.length > 1;
+      };
+
+      $scope.saveForm = function() {
+        FormResource.update($scope.form).then(
+          function(resourceResult) {
+            if( !resourceResult.isError ){
+              $scope.returnToChart();
+            }
+
+          },
+          function(resourceError) {
+            $scope.form.hasFailure = resourceError.isError;
+            $scope.form.failureMessage = resourceError.apiMessage;
+          }
+        );
       };
     }
   ]);

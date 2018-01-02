@@ -47,7 +47,40 @@ function FormDocument(serverObject) {
           signatureDate: String,
           timeSpent: String
         }
-      });
+      }),
+      medSchema = db.Schema({
+        active: Boolean,
+        content: {
+          medications: [{
+            usage: String,
+            name: String,
+            form: String,
+            dosage: String,
+            directions: String,
+            startdate: String,
+            enddate: String,
+            notes: String
+          }]
+        },
+        dates: {
+          created: Date,
+          modified: Date
+        },
+        name: String,
+        preamble: {
+          facilityName: String,
+          patient: db.Schema.Types.ObjectId,
+          patientName: String,
+          patientSsn: String,
+          visitDate: String
+        },
+        routeName: String,
+        suffix: {
+          pharmacistName: String,
+          signatureDate: String,
+          timeSpent: String
+        }
+      }),
       soapSchema = db.Schema({
         active: Boolean,
         content: {
@@ -78,6 +111,7 @@ function FormDocument(serverObject) {
   //var formModel = db.model('Form', formSchema);
   //we'll need a model per form?
   var mapModel = db.model('MapForm', mapSchema),
+      medModel = db.model('MedForm', medSchema),
       soapModel = db.model('SoapForm', soapSchema);
 
   var documentFunctions = {
@@ -89,6 +123,10 @@ function FormDocument(serverObject) {
           switch (modelObject.routeName) {
             case 'map':
               document = new mapModel(modelObject);
+              break;
+
+            case 'med':
+              document = new medModel(modelObject);
               break;
 
             case 'soap':
@@ -117,6 +155,10 @@ function FormDocument(serverObject) {
               return mapModel.findOne({ _id: formId });
               break;
 
+            case 'med':
+              return medModel.findOne({ _id: formId });
+              break;
+
             case 'soap':
               return soapModel.findOne({ _id: formId });
               break;
@@ -133,6 +175,13 @@ function FormDocument(serverObject) {
 
           formPromises.push(
             mapModel
+              .find({ 'preamble.patient': patientId }, 'dates.modified name routeName preamble.patient preamble.visitDate')
+              .where('active')
+              .equals(true)
+              .sort({ 'preamble.visitDate': 1 })
+          );
+          formPromises.push(
+            medModel
               .find({ 'preamble.patient': patientId }, 'dates.modified name routeName preamble.patient preamble.visitDate')
               .where('active')
               .equals(true)
@@ -168,6 +217,15 @@ function FormDocument(serverObject) {
               mapModel.findById(id, function(err, doc) {
                 var existingDoc = extend(true, doc, modelObject);
                 var document = new mapModel(existingDoc);
+
+                documentDO.resolve(document);
+              });
+              break;
+
+            case 'med':
+              medModel.findById(id, function(err, doc) {
+                var existingDoc = extend(true, doc, modelObject);
+                var document = new medModel(existingDoc);
 
                 documentDO.resolve(document);
               });
