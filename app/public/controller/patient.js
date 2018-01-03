@@ -75,6 +75,7 @@
       $scope.newDrugAllergy = '';
       //seed the form
       $scope.patient = angular.extend({}, patientModel);
+      $scope.allowAddEditInsurance = false;
 
       FacilityResource.list().then(function(resourceResult) {
         resourceResult.listing.forEach(function(facility) {
@@ -107,7 +108,11 @@
         PatientResource.create($scope.patient).then(
           function(resourceResult) {
             if( !resourceResult.isError ){
-              $location.path('/');
+              //$location.path('/');
+              //ask user about insurance...
+              //  branch:
+              //    yes - goto to patient insurance route
+              //    no - goto to dashboard route
             }
 
           },
@@ -139,6 +144,7 @@
       $scope.newDrugAllergy = '';
       //populate form directly from database
       $scope.patient = angular.extend({}, patient);
+      $scope.allowAddEditInsurance = true;
 
       //a little massage for the facility ui
       if( angular.isDefined(patient.facility) ){
@@ -166,6 +172,10 @@
 
         //reset the form
         $scope.newDrugAllergy = '';
+      };
+
+      $scope.inspectInsurance = function() {
+        $location.path('/patient/' + patient._id + '/insurance');
       };
 
       $scope.returnToDashboard = function() {

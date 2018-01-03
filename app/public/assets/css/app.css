@@ -32,9 +32,18 @@
   height: 16px;
   width: 16px;
 }
-.text-fail {
-  color: #CC3333;
+
+/* for angular-bootstrap modal */
+.fade.in {
+  opacity: 1;
 }
-.text-success {
-  color: #009900;
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
 }
+.modal-backdrop.in {
+  filter: alpha(opacity=50);
+  opacity: .5;
+}
+/* *************************** */

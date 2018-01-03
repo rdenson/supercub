@@ -1,0 +1,94 @@
+<div class="row justify-content-center justify-content-md-center mt-2 mb-1">
+  <!-- action toolbar -->
+  <div class="col-12 col-md-12 col-xl-10">
+    <div class="btn-toolbar">
+      <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-secondary" ng-click="returnToPatient()">Back to Patient</button>
+        <button type="button" class="btn btn-secondary" ng-click="summonInsuranceForm()">Add Insurance</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center justify-content-md-center mb-3">
+  <div class="col-12 col-md-12 col-xl-10">
+    <!-- no insurances specified -->
+    <div class="text-center" ng-show="insuranceCollection.length == 0"><em>there are no insurances for this patient</em></div>
+    <!-- when we have insurances to display -->
+    <div class="row justify-content-start justify-content-md-start" ng-show="insuranceCollection.length > 0">
+      <div class="col-6 col-md-4 col-xl-3 mb-2" ng-repeat="insurance in insuranceCollection">
+        <div class="card">
+          <div class="card-body">
+
+            <h5 class="card-title">{{ insurance.insuranceName }}</h5>
+            <h6 class="card-subtitle" ng-show="insurance.isPrimary">PRIMARY</h6>
+            <p class="card-text">
+              <small>modified on {{ insurance.lastModified }}</small>
+            </p>
+            <a href="" class="card-link" ng-click="summonInsuranceForm(insurance._id)">View Document</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="insuranceForm.html">
+  <div class="modal-header" ng-show="isNewEntry">
+    <h3 class="modal-title" id="modal-title">New Insurance</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <div class="row justify-content-center justify-content-md-center mb-3">
+      <div class="col-12">
+        <div class="form-row">
+          <div class="col-12 col-md-6 col-xl-4">
+            <label for="insurancename">Insurance Name</label>
+            <input id="insurancename" type="text" class="form-control form-control-sm" ng-model="form.insuranceName">
+          </div>
+          <div class="col-12 col-md-6 col-xl-6">
+            <label for="insurancename">Identification Number</label>
+            <input id="insuranceid" type="text" class="form-control form-control-sm" placeholder="Plan ID or Number" ng-model="form.insuranceId">
+          </div>
+          <div class="col-12 col-md-6 col-xl-4">
+            <label for="insurancename">Subscriber</label>
+            <input id="policyholder" type="text" class="form-control form-control-sm" placeholder="Policy Holder" ng-model="form.policyHolder">
+          </div>
+        </div>
+        <div class="form-row form-group">
+          <div class="col-12 col-md-4">
+            <label for="groupnumber">Group Number</label>
+            <input id="groupnumber" type="text" class="form-control form-control-sm" ng-model="form.groupNumber">
+          </div>
+          <div class="col-12 col-md-4 col-xl-3">
+            <label for="coveragedate">Coverage Date</label>
+            <input id="coveragedate" type="text" class="form-control form-control-sm" placeholder="mm/dd/yyyy" ng-model="form.coverageDate">
+          </div>
+          <div class="col-12 col-md-4 col-xl-3">
+            <label for="effectivedate">Member Effective</label>
+            <input id="effectivedate" type="text" class="form-control form-control-sm" placeholder="mm/dd/yyyy" ng-model="form.effectiveDate">
+          </div>
+        </div>
+        <div class="form-row form-group">
+          <div class="col-12 col-md-6">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="isPrimary" ng-model="form.isPrimary">
+              <label class="form-check-label" for="isPrimary">
+                primary insurance
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="insuranceNotes">Notes</label>
+            <textarea id="insuranceNotes" class="form-control form-control-sm" rows="3" ng-model="form.notes"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="saveInsurance()">Save Insurance</button>
+    <button class="btn btn-warning" type="button" ng-click="closeModal()">Cancel</button>
+  </div>
+</script>

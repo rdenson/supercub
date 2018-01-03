@@ -202,7 +202,7 @@
       <div class="card-body">
         <!-- user alert / form validation needs work -->
         <div class="alert alert-danger" ng-show="form.hasFailure">{{ form.failureMessage }}</div>
-        <button type="button" class="btn btn-info btn-sm btn-block">Add Insurance Information</button>
+        <button type="button" class="btn btn-info btn-sm btn-block" ng-show="allowAddEditInsurance" ng-click="inspectInsurance()">Add/Edit Insurance Information</button>
         <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="savePatient()">Save Patient</button>
       </div>
     </div>

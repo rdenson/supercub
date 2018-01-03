@@ -1,16 +1,15 @@
 var kq = require('q');
 
 
-function FormApi(svr) {
-  var API_BASE = '/v1/form',
+function InsuranceApi(svr) {
+  var API_BASE = '/v1/insurance',
       auditDocument = svr.get('AuditDocument'),
-      formDocument = svr.get('FormDocument'),
+      insuranceDocument = svr.get('InsuranceDocument'),
       session = svr.get('session');
 
-  svr.get(API_BASE + '/:formAbbr/:formId', function(request, response) {
+  svr.get(API_BASE + '/:insuranceId', function(request, response) {
     var authDO = kq.defer(),
-        formAbbr = request.params.formAbbr,
-        formId = request.params.formId,
+        insuranceId = request.params.insuranceId,
         token = request.headers.token || '';
 
     //verify an active session; there are no roles or rights to verify yet
@@ -25,13 +24,13 @@ function FormApi(svr) {
 
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
-      formDocument.getForm(formAbbr, formId).then(
+      insuranceDocument.get(insuranceId).then(
         function(queryResult) {
-          response.json({ form: queryResult });
+          response.json({ insurance: queryResult });
         },
         function(queryError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/' + formAbbr + '/' + formId + ' failed');
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - GET ' + API_BASE + '/' + insuranceId + ' failed');
           console.log(queryError);
           response.status(500).json();
         }
@@ -39,9 +38,9 @@ function FormApi(svr) {
     });
   });
 
-  svr.get(API_BASE + '/list', function(request, response) {
+  svr.get(API_BASE + '/list/:patientId', function(request, response) {
     var authDO = kq.defer(),
-        patientId = request.query.patientId,
+        patientId = request.params.patientId,
         token = request.headers.token || '';
 
     //verify an active session; there are no roles or rights to verify yet
@@ -56,7 +55,7 @@ function FormApi(svr) {
 
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
-      formDocument.list(patientId).then(
+      insuranceDocument.list(patientId).then(
         function(queryResult) {
           response.json({ listing: queryResult });
         },
@@ -72,18 +71,21 @@ function FormApi(svr) {
 
   svr.post(API_BASE, function(request, response) {
     var authDO = kq.defer(),
-        //marshal the post body into a patient model
-        formData = {
+        insuranceData = {
           active: true,
-          content: JSON.parse(request.body.content),
+          coverageDate: request.body.coverageDate,
           dates: {
             created: new Date(),
             modified: new Date()
           },
-          name: request.body.name,
-          preamble: JSON.parse(request.body.preamble),
-          routeName: request.body.routeName,
-          suffix: JSON.parse(request.body.suffix)
+          effectiveDate: request.body.effectiveDate,
+          groupNumber: request.body.groupNumber,
+          insuranceId: request.body.insuranceId,
+          insuranceName: request.body.insuranceName,
+          isPrimary: request.body.isPrimary,
+          notes: request.body.notes,
+          patient: request.body.patient,
+          policyHolder: request.body.policyHolder
         },
         token = request.headers.token || '';
 
@@ -99,23 +101,24 @@ function FormApi(svr) {
 
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
-      formDocument.create(formData).then(
+      //use the database document to save the insurance
+      insuranceDocument.create(insuranceData).then(
         function(id) {
-          //write an audit entry when we've saved our new facility, no need to wait for it to return
+          //write an audit entry when we've saved our new insurance, no need to wait for it to return
           auditDocument.addEntry({
             user: currentSession.id,
-            action: 'creating a new ' + formData.name + ' form',
+            action: 'created new insurance',
             document: id,
             timestamp: new Date()
           });
           //return the id we just created
-          response.status(201).json({ formId: id });
+          response.status(201).json({ insuranceId: id });
         },
-        function(createError) {
+        function(saveError) {
           //try to explain the error we received
-          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + createError.message);
-          console.log(formData);
-          response.status(500).json({ message: createError.message });
+          console.log('EHRLOG ' + svr.get('env') + ' [error] - POST ' + API_BASE + ' failed, ' + saveError.message);
+          console.log(insuranceData);
+          response.status(500).json({ message: saveError.message });
         }
       );
     });
@@ -124,18 +127,22 @@ function FormApi(svr) {
   svr.put(API_BASE, function(request, response) {
     var authDO = kq.defer(),
         //marshal the post body into a patient model
-        formData = {
+        insuranceData = {
           active: true,
-          content: JSON.parse(request.body.content),
+          coverageDate: request.body.coverageDate,
           dates: {
             modified: new Date()
           },
-          name: request.body.name,
-          preamble: JSON.parse(request.body.preamble),
-          routeName: request.body.routeName,
-          suffix: JSON.parse(request.body.suffix)
+          effectiveDate: request.body.effectiveDate,
+          groupNumber: request.body.groupNumber,
+          insuranceId: request.body.insuranceId,
+          insuranceName: request.body.insuranceName,
+          isPrimary: request.body.isPrimary,
+          notes: request.body.notes,
+          patient: request.body.patient,
+          policyHolder: request.body.policyHolder
         },
-        formId = request.body._id,
+        insuranceId = request.body._id,
         token = request.headers.token || '';
 
     //verify an active session; there are no roles or rights to verify yet
@@ -150,22 +157,22 @@ function FormApi(svr) {
 
     //if we're authorized...
     authDO.promise.then(function(currentSession) {
-      formDocument.update(formId, formData).then(
+      insuranceDocument.update(insuranceId, insuranceData).then(
         function(id) {
           //write an audit entry when we've saved our facility, no need to wait for it to return
           auditDocument.addEntry({
             user: currentSession.id,
-            action: 'modified form',
+            action: 'modified insurance',
             document: id,
             timestamp: new Date()
           });
           //return the id we just updated
-          response.json({ formId: id });
+          response.json({ insuranceId: id });
         },
         function(updateError) {
           //try to explain the error we received
           console.log('EHRLOG ' + svr.get('env') + ' [error] - PUT ' + API_BASE + ' failed, ' + updateError.message);
-          console.log(formData);
+          console.log(insuranceData);
           response.status(500).json({ message: updateError.message });
         }
       );
@@ -174,4 +181,4 @@ function FormApi(svr) {
 }
 
 
-exports.api = FormApi;
+exports.api = InsuranceApi;

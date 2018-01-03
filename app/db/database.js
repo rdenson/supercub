@@ -1,6 +1,7 @@
 var auditDocument = require('./audit-document'),
     facilityDocument = require('./facility-document');
     formDocument = require('./form-document');
+    insuranceDocument = require('./insurance-document');
     patientDocument = require('./patient-document');
 
 
@@ -20,6 +21,7 @@ function handler(svr) {
   auditDocument(svr);
   facilityDocument(svr);
   formDocument(svr);
+  insuranceDocument(svr);
   patientDocument(svr);
 }
 

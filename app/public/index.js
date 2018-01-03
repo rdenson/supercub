@@ -10,9 +10,11 @@
         'controller.facility',
         'controller.patient',
         'controller.patient-chart',
+        'controller.patient-insurance',
         'resource.auth-user',
         'resource.user',
-        'ngCookies'
+        'ngCookies',
+        'ui.bootstrap'
       ]);
 
   consoApp.config([
