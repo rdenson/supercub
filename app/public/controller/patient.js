@@ -59,11 +59,12 @@
   patientModule.controller('NewPatientController', [
     '$location',
     '$scope',
+    '$uibModal',
     'FacilityResource',
     'FormUtilitiesResource',
     'patientModel',
     'PatientResource',
-    function($location, $scope, FacilityResource, FormUtilitiesResource, patientModel, PatientResource) {
+    function($location, $scope, $uibModal, FacilityResource, FormUtilitiesResource, patientModel, PatientResource) {
       $scope.form = {
         facilityList: [{ display: 'select...', value: '' }],
         failureMessage: '',
@@ -105,22 +106,37 @@
       }
 
       $scope.savePatient = function() {
-        PatientResource.create($scope.patient).then(
-          function(resourceResult) {
-            if( !resourceResult.isError ){
-              //$location.path('/');
-              //ask user about insurance...
-              //  branch:
-              //    yes - goto to patient insurance route
-              //    no - goto to dashboard route
-            }
+        var newPatientChoiceInstance = $uibModal.open({
+          animation: true,
+          scope: $scope,
+          templateUrl: 'newPatientChoice.html'
+        });
 
-          },
-          function(resourceError) {
-            $scope.form.hasFailure = resourceError.isError;
-            $scope.form.failureMessage = resourceError.apiMessage;
-          }
-        );
+        $scope.closeModal = function() {
+          newPatientChoiceInstance.close();
+        };
+
+        $scope.saveAndContinue = function(continueToInsurance) {
+          PatientResource.create($scope.patient).then(
+            function(resourceResult) {
+              //save patient and goto patient insurance route
+              if( continueToInsurance && !resourceResult.isError ){
+                $location.path('/patient/' + resourceResult.patientId + '/insurance');
+              } else {
+                //save patient and return to dashboard
+                $location.path('/');
+              }
+            },
+            function(resourceError) {
+              $scope.form.hasFailure = resourceError.isError;
+              $scope.form.failureMessage = resourceError.apiMessage;
+            }
+          );
+        };
+
+        //quell the "Possibly unhandled rejection" message for handing close
+        //events such as ESC key press
+        newPatientChoiceInstance.result.then(angular.noop, angular.noop);
       };
     }
   ]);
